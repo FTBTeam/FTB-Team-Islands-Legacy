@@ -1,1 +1,1 @@
-# TeamIslands
+# Team Islands [![](http://cf.way2muchnoise.eu/team-islands.svg)](https://minecraft.curseforge.com/projects/team-islands) [![](http://cf.way2muchnoise.eu/versions/team-islands.svg)](https://minecraft.curseforge.com/projects/team-islands)

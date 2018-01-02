@@ -1,0 +1,17 @@
+[
+	{
+		"modid": "teamislands",
+		"name": "Team Islands",
+		"description": "",
+		"version": "${version}",
+		"mcversion": "${mcversion}",
+		"url": "http://minecraft.curseforge.com/projects/team-islands",
+		"updateUrl": "",
+		"authorList": ["LatvianModder"],
+		"credits": "",
+		"logoFile": "assets/teamislands/textures/logo.png",
+		"screenshots": [],
+		"parent": "",
+		"dependencies": []
+	}
+]

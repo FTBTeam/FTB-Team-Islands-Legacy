@@ -1,0 +1,12 @@
+teamislands.islands=Islands
+teamislands.islands.distance=Distance Between Islands
+teamislands.islands.enable_teleport_buttons=Enable Teleport Buttons
+teamislands.islands.height=Islands and Lobby Height
+
+teamislands.login_text=Join or create a team to teleport to your island
+
+generator.teamislands=Team Islands
+generator.teamislands.info=Required type for this pack
+
+teamislands.action.lobby=Teleport to Lobby
+teamislands.action.my_island=Teleport to My Island
