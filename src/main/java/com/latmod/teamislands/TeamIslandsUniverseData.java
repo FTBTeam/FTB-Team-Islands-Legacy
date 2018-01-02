@@ -6,6 +6,7 @@ import com.feed_the_beast.ftblib.lib.EventHandler;
 import com.feed_the_beast.ftblib.lib.data.ForgeTeam;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -95,7 +96,7 @@ public class TeamIslandsUniverseData
 	@SubscribeEvent
 	public static void onUniverseFinishedLoading(UniverseLoadedEvent.Finished event)
 	{
-		event.getWorld().setSpawnPoint(TeamIslandsUniverseData.getIsland(0).getBlockPos(1));
+		event.getWorld().setSpawnPoint(TeamIslandsUniverseData.getIsland(0).getBlockPos().offset(EnumFacing.UP));
 	}
 
 	@SubscribeEvent

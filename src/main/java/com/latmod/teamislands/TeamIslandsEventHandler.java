@@ -11,6 +11,7 @@ import com.feed_the_beast.ftblib.lib.data.Universe;
 import com.feed_the_beast.ftblib.lib.util.LangKey;
 import com.feed_the_beast.ftblib.lib.util.ServerUtils;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -26,8 +27,8 @@ public class TeamIslandsEventHandler
 	@SubscribeEvent
 	public static void registerTeamGuiActions(RegisterTeamGuiActionsEvent event)
 	{
-		event.register(TeamIslandsTeamGuiActions.LOBBY);
-		event.register(TeamIslandsTeamGuiActions.MY_ISLAND);
+		event.register(TeamIslandsTeamGuiActions.TP_LOBBY);
+		event.register(TeamIslandsTeamGuiActions.TP_MY_ISLAND);
 	}
 
 	@SubscribeEvent
@@ -56,9 +57,18 @@ public class TeamIslandsEventHandler
 			if (event.getTeam().getMembers().size() == 1)
 			{
 				World w = ServerUtils.getOverworld();
-				w.setBlockState(island.getBlockPos(0), Blocks.OBSIDIAN.getDefaultState());
-				w.setBlockState(island.getBlockPos(1), Blocks.AIR.getDefaultState());
-				w.setBlockState(island.getBlockPos(2), Blocks.AIR.getDefaultState());
+				BlockPos pos = island.getBlockPos();
+				int s = TeamIslandsConfig.islands.platform_radius;
+
+				for (int z = -s; z <= s; z++)
+				{
+					for (int x = -s; x <= s; x++)
+					{
+						w.setBlockState(pos.add(x, 0, z), TeamIslandsConfig.islands.getState(w.rand));
+						w.setBlockState(pos.add(x, 1, z), Blocks.AIR.getDefaultState());
+						w.setBlockState(pos.add(x, 2, z), Blocks.AIR.getDefaultState());
+					}
+				}
 			}
 		}
 	}

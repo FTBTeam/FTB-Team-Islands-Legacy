@@ -1,6 +1,5 @@
 package com.latmod.teamislands;
 
-import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
@@ -22,7 +21,7 @@ import java.util.Random;
 public class TeamIslandsChunkGenerator implements IChunkGenerator
 {
 	private static final IBlockState AIR_STATE = Blocks.AIR.getDefaultState();
-	private static final ChunkPrimer CHUNK_PRIMER_TI = new ChunkPrimer()
+	private static final ChunkPrimer TEAM_ISLANDS_CHUNK_PRIMER = new ChunkPrimer()
 	{
 		@Override
 		public IBlockState getBlockState(int x, int y, int z)
@@ -43,26 +42,10 @@ public class TeamIslandsChunkGenerator implements IChunkGenerator
 	@Override
 	public Chunk generateChunk(int x, int z)
 	{
-		Chunk chunk = new Chunk(world, CHUNK_PRIMER_TI, x, z);
+		Chunk chunk = new Chunk(world, TEAM_ISLANDS_CHUNK_PRIMER, x, z);
 		System.arraycopy(biomeArray, 0, chunk.getBiomeArray(), 0, biomeArray.length);
 		chunk.generateSkylightMap();
 		return chunk;
-	}
-
-	private IBlockState getStoneState(Random random)
-	{
-		int i = random.nextInt(10);
-
-		if (i == 0)
-		{
-			return Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED);
-		}
-		else if (i == 1)
-		{
-			return Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
-		}
-
-		return Blocks.STONEBRICK.getDefaultState();
 	}
 
 	@Override
@@ -84,12 +67,12 @@ public class TeamIslandsChunkGenerator implements IChunkGenerator
 					{
 						for (int y = 0; y < 5; y++)
 						{
-							world.setBlockState(new BlockPos(blockx, TeamIslandsConfig.islands.height + y, blockz), getStoneState(random));
+							world.setBlockState(new BlockPos(blockx, TeamIslandsConfig.lobby.height + y, blockz), TeamIslandsConfig.lobby.getState(random));
 						}
 					}
 					else
 					{
-						world.setBlockState(new BlockPos(blockx, TeamIslandsConfig.islands.height, blockz), getStoneState(random));
+						world.setBlockState(new BlockPos(blockx, TeamIslandsConfig.lobby.height, blockz), TeamIslandsConfig.lobby.getState(random));
 					}
 				}
 			}
@@ -105,12 +88,12 @@ public class TeamIslandsChunkGenerator implements IChunkGenerator
 					{
 						for (int y = 0; y < 5; y++)
 						{
-							world.setBlockState(new BlockPos(blockx, TeamIslandsConfig.islands.height + y, blockz), barrier);
+							world.setBlockState(new BlockPos(blockx, TeamIslandsConfig.lobby.height + y, blockz), barrier);
 						}
 					}
 					else
 					{
-						world.setBlockState(new BlockPos((x << 4) + bx, TeamIslandsConfig.islands.height - 1, (z << 4) + bz), barrier);
+						world.setBlockState(new BlockPos((x << 4) + bx, TeamIslandsConfig.lobby.height - 1, (z << 4) + bz), barrier);
 					}
 				}
 			}

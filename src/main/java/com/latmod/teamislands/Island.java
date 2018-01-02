@@ -4,6 +4,7 @@ import com.feed_the_beast.ftblib.lib.math.BlockDimPos;
 import com.feed_the_beast.ftblib.lib.math.MathUtils;
 import com.feed_the_beast.ftblib.lib.util.ServerUtils;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
@@ -30,14 +31,15 @@ public class Island
 		return id <= 0;
 	}
 
-	public BlockPos getBlockPos(int yoff)
+	public BlockPos getBlockPos()
 	{
-		return new BlockPos(((x * TeamIslandsConfig.islands.distance_chunks) << 4) + 8, TeamIslandsConfig.islands.height + yoff, ((z * TeamIslandsConfig.islands.distance_chunks) << 4) + 8);
+		int h = id == 0 ? TeamIslandsConfig.lobby.height : TeamIslandsConfig.islands.height;
+		return new BlockPos(((x * TeamIslandsConfig.islands.distance_chunks) << 4) + 8, h, ((z * TeamIslandsConfig.islands.distance_chunks) << 4) + 8);
 	}
 
 	public void teleport(Entity entity)
 	{
-		ServerUtils.teleportEntity(entity, new BlockDimPos(getBlockPos(1), 0));
+		ServerUtils.teleportEntity(entity, new BlockDimPos(getBlockPos().offset(EnumFacing.UP), 0));
 	}
 
 	public boolean isInside(double px, double pz)

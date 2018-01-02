@@ -45,7 +45,7 @@ public class TeamIslandsWorldType extends WorldType
 	@Override
 	public int getMinimumSpawnHeight(World world)
 	{
-		return TeamIslandsConfig.islands.height + 1;
+		return TeamIslandsConfig.lobby.height + 1;
 	}
 
 	@Override
