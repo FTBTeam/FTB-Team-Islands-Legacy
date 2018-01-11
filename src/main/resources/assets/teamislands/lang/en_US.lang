@@ -1,3 +1,5 @@
+teamislands.general.default_world_type=Default World Type
+
 teamislands.lobby=Lobby
 teamislands.islands.distance=Distance Between Islands
 teamislands.lobby.enable_teleport_button=Enable Teleport Button

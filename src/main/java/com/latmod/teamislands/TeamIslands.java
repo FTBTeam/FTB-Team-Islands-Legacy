@@ -1,6 +1,7 @@
 package com.latmod.teamislands;
 
 import com.feed_the_beast.ftblib.FTBLibFinals;
+import net.minecraft.world.WorldType;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -20,5 +21,12 @@ public class TeamIslands
 	public void onPostInit(FMLPostInitializationEvent event)
 	{
 		TeamIslandsWorldType.INSTANCE.init();
+
+		if (TeamIslandsConfig.general.default_world_type)
+		{
+			int id = TeamIslandsWorldType.INSTANCE.getId();
+			WorldType.WORLD_TYPES[WorldType.DEFAULT.getId()] = TeamIslandsWorldType.INSTANCE;
+			WorldType.WORLD_TYPES[id] = WorldType.DEFAULT;
+		}
 	}
 }

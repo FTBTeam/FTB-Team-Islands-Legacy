@@ -1,5 +1,6 @@
 package com.latmod.teamislands;
 
+import com.feed_the_beast.ftblib.lib.gui.GuiLang;
 import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
@@ -16,8 +17,16 @@ import java.util.Random;
 @Config(modid = TeamIslandsFinals.MOD_ID, category = "")
 public class TeamIslandsConfig
 {
+	@Config.LangKey(GuiLang.LANG_GENERAL)
+	public static final General general = new General();
 	public static final Lobby lobby = new Lobby();
 	public static final Islands islands = new Islands();
+
+	public static class General
+	{
+		@Config.Comment("Swaps Default and Team Islands world types in singleplayer world creation GUI")
+		public boolean default_world_type = true;
+	}
 
 	public static class Lobby
 	{
