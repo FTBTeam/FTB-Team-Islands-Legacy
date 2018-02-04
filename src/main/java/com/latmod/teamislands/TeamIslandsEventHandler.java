@@ -9,7 +9,6 @@ import com.feed_the_beast.ftblib.events.team.RegisterTeamGuiActionsEvent;
 import com.feed_the_beast.ftblib.lib.EventHandler;
 import com.feed_the_beast.ftblib.lib.data.Universe;
 import com.feed_the_beast.ftblib.lib.util.LangKey;
-import com.feed_the_beast.ftblib.lib.util.ServerUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -56,7 +55,7 @@ public class TeamIslandsEventHandler
 
 			if (event.getTeam().getMembers().size() == 1)
 			{
-				World w = ServerUtils.getOverworld();
+				World w = event.getUniverse().world;
 				BlockPos pos = island.getBlockPos();
 				int s = TeamIslandsConfig.islands.platform_radius;
 
@@ -85,7 +84,7 @@ public class TeamIslandsEventHandler
 	@SubscribeEvent
 	public static void onTeamDeleted(ForgeTeamDeletedEvent event)
 	{
-		if (TeamIslandsWorldType.INSTANCE.is(ServerUtils.getOverworld()))
+		if (TeamIslandsWorldType.INSTANCE.is(event.getUniverse().world))
 		{
 			Island island = TeamIslandsUniverseData.getIsland(event.getTeam());
 
@@ -99,7 +98,7 @@ public class TeamIslandsEventHandler
 	@SubscribeEvent
 	public static void onPlayerRespawned(PlayerEvent.PlayerRespawnEvent event)
 	{
-		if (!event.player.world.isRemote && event.player.world.provider.getDimension() == 0 && TeamIslandsWorldType.INSTANCE.is(event.player.world))
+		if (Universe.loaded() && !event.player.world.isRemote && event.player.world.provider.getDimension() == 0 && TeamIslandsWorldType.INSTANCE.is(event.player.world))
 		{
 			TeamIslandsUniverseData.getIsland(Universe.get().getPlayer(event.player).getTeam()).teleport(event.player);
 		}
