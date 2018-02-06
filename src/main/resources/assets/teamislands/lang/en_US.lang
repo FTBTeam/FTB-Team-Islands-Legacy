@@ -1,19 +1,14 @@
-teamislands.general.default_world_type=Default World Type
-
 teamislands.lobby=Lobby
-teamislands.islands.distance=Distance Between Islands
 teamislands.lobby.enable_teleport_button=Enable Teleport Button
-teamislands.lobby.height=Height
-teamislands.lobby.blocks=Structure Blocks
 
 teamislands.islands=Islands
+teamislands.islands.height=Height
+teamislands.islands.blocks=Structure Blocks
 teamislands.islands.distance=Distance Between Islands
 teamislands.islands.platform_radius=Platform Radius
+teamislands.islands.autoclaim_radius=Auto-claim Radius
 
 teamislands.login_text=Join or create a team to teleport to your island
-
-generator.teamislands=Team Islands
-generator.teamislands.info=Required type for this pack
 
 teamislands.action.tp_lobby=Teleport to Lobby
 teamislands.action.tp_my_island=Teleport to My Island

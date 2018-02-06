@@ -19,13 +19,13 @@ public class TeamIslandsTeamGuiActions
 		@Override
 		public boolean isAvailable(ForgeTeam team, ForgePlayer player, NBTTagCompound data)
 		{
-			return TeamIslandsConfig.lobby.enable_teleport_button && !TeamIslandsUniverseData.getIsland(0).isInside(player.getPlayer().posX, player.getPlayer().posZ);
+			return TeamIslandsConfig.lobby.enable_teleport_button && !TeamIslandsUniverseData.INSTANCE.getIsland(0).isInside(player.getPlayer().posX, player.getPlayer().posZ);
 		}
 
 		@Override
 		public void onAction(ForgeTeam team, ForgePlayer player, NBTTagCompound data)
 		{
-			TeamIslandsUniverseData.getIsland(0).teleport(player.getPlayer());
+			TeamIslandsUniverseData.INSTANCE.getIsland(0).teleport(player.getPlayer());
 			FTBLibAPI.sendCloseGuiPacket(player.getPlayer());
 			FTBLibAPI.sendCloseGuiPacket(player.getPlayer());
 		}
@@ -41,14 +41,14 @@ public class TeamIslandsTeamGuiActions
 				return false;
 			}
 
-			Island island = TeamIslandsUniverseData.getIsland(team);
+			Island island = TeamIslandsUniverseData.INSTANCE.getIsland(team);
 			return !island.isLobby() && !island.isInside(player.getPlayer().posX, player.getPlayer().posZ);
 		}
 
 		@Override
 		public void onAction(ForgeTeam team, ForgePlayer player, NBTTagCompound data)
 		{
-			TeamIslandsUniverseData.getIsland(team).teleport(player.getPlayer());
+			TeamIslandsUniverseData.INSTANCE.getIsland(team).teleport(player.getPlayer());
 			FTBLibAPI.sendCloseGuiPacket(player.getPlayer());
 			FTBLibAPI.sendCloseGuiPacket(player.getPlayer());
 		}

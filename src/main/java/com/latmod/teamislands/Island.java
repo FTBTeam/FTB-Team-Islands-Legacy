@@ -7,23 +7,28 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.storage.WorldInfo;
 
 /**
  * @author LatvianModder
  */
 public class Island
 {
+	public final TeamIslandsUniverseData data;
 	public final int id, x, z;
-	public boolean active = true;
+	public boolean active;
 	public String creator;
+	public BlockPos spawnPoint;
 
-	public Island(int i, int _x, int _z, boolean a, String c)
+	public Island(TeamIslandsUniverseData d, int i, int _x, int _z, boolean a, String c)
 	{
+		data = d;
 		id = i;
 		x = _x;
 		z = _z;
 		active = a;
 		creator = c;
+		spawnPoint = new BlockPos(((x * TeamIslandsConfig.islands.distance_chunks) << 4) + 8, TeamIslandsConfig.islands.height, ((z * TeamIslandsConfig.islands.distance_chunks) << 4) + 8);
 	}
 
 	public boolean isLobby()
@@ -33,8 +38,13 @@ public class Island
 
 	public BlockPos getBlockPos()
 	{
-		int h = id == 0 ? TeamIslandsConfig.lobby.height : TeamIslandsConfig.islands.height;
-		return new BlockPos(((x * TeamIslandsConfig.islands.distance_chunks) << 4) + 8, h, ((z * TeamIslandsConfig.islands.distance_chunks) << 4) + 8);
+		if (isLobby())
+		{
+			WorldInfo info = data.universe.world.getWorldInfo();
+			return new BlockPos(info.getSpawnX(), info.getSpawnY(), info.getSpawnZ());
+		}
+
+		return spawnPoint;
 	}
 
 	public void teleport(Entity entity)

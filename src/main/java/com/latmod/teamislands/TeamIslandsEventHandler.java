@@ -1,5 +1,6 @@
 package com.latmod.teamislands;
 
+import com.feed_the_beast.ftblib.FTBLibConfig;
 import com.feed_the_beast.ftblib.events.RegisterDataProvidersEvent;
 import com.feed_the_beast.ftblib.events.player.ForgePlayerLoggedInEvent;
 import com.feed_the_beast.ftblib.events.team.ForgeTeamDeletedEvent;
@@ -33,13 +34,13 @@ public class TeamIslandsEventHandler
 	@SubscribeEvent
 	public static void onTeamData(RegisterDataProvidersEvent.Team event)
 	{
-		event.register(TeamIslandsUniverseData.DATA_ID, TeamIslandsTeamData::new);
+		event.register(TeamIslandsUniverseData.DATA_ID, team -> new TeamIslandsTeamData(TeamIslandsUniverseData.INSTANCE, team));
 	}
 
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(ForgePlayerLoggedInEvent event)
 	{
-		if (event.getPlayer().getTeam() == null && TeamIslandsWorldType.INSTANCE.is(event.getPlayer().getPlayer().world))
+		if (event.getPlayer().getTeam() == null && !(event.isFirstLogin() && (event.getUniverse().server.isDedicatedServer() ? FTBLibConfig.teams.autocreate_mp : FTBLibConfig.teams.autocreate_sp)))
 		{
 			LOGIN_TEXT.sendMessage(event.getPlayer().getPlayer());
 		}
@@ -48,9 +49,9 @@ public class TeamIslandsEventHandler
 	@SubscribeEvent
 	public static void onPlayerJoinedTeam(ForgeTeamPlayerJoinedEvent event)
 	{
-		if (event.getPlayer().isOnline() && TeamIslandsWorldType.INSTANCE.is(event.getPlayer().getPlayer().world))
+		if (event.getPlayer().isOnline())
 		{
-			Island island = TeamIslandsUniverseData.getIsland(event.getTeam());
+			Island island = TeamIslandsUniverseData.INSTANCE.getIsland(event.getTeam());
 			island.teleport(event.getPlayer().getPlayer());
 
 			if (event.getTeam().getMembers().size() == 1)
@@ -75,32 +76,29 @@ public class TeamIslandsEventHandler
 	@SubscribeEvent
 	public static void onPlayerLeftTeam(ForgeTeamPlayerLeftEvent event)
 	{
-		if (event.getPlayer().isOnline() && TeamIslandsWorldType.INSTANCE.is(event.getPlayer().getPlayer().world))
+		if (event.getPlayer().isOnline())
 		{
-			TeamIslandsUniverseData.getIsland(0).teleport(event.getPlayer().getPlayer());
+			TeamIslandsUniverseData.INSTANCE.getIsland(0).teleport(event.getPlayer().getPlayer());
 		}
 	}
 
 	@SubscribeEvent
 	public static void onTeamDeleted(ForgeTeamDeletedEvent event)
 	{
-		if (TeamIslandsWorldType.INSTANCE.is(event.getUniverse().world))
-		{
-			Island island = TeamIslandsUniverseData.getIsland(event.getTeam());
+		Island island = TeamIslandsUniverseData.INSTANCE.getIsland(event.getTeam());
 
-			if (!island.isLobby())
-			{
-				island.active = false;
-			}
+		if (!island.isLobby())
+		{
+			island.active = false;
 		}
 	}
 
 	@SubscribeEvent
 	public static void onPlayerRespawned(PlayerEvent.PlayerRespawnEvent event)
 	{
-		if (Universe.loaded() && !event.player.world.isRemote && event.player.world.provider.getDimension() == 0 && TeamIslandsWorldType.INSTANCE.is(event.player.world))
+		if (Universe.loaded() && !event.player.world.isRemote && event.player.world.provider.getDimension() == 0)
 		{
-			TeamIslandsUniverseData.getIsland(Universe.get().getPlayer(event.player).getTeam()).teleport(event.player);
+			TeamIslandsUniverseData.INSTANCE.getIsland(Universe.get().getPlayer(event.player).getTeam()).teleport(event.player);
 		}
 	}
 }

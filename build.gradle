@@ -35,6 +35,7 @@ repositories {
 
 dependencies {
 	deobfCompile "com.feed_the_beast.ftblib:FTBLib:${ftblib_version}"
+	deobfCompile "com.feed_the_beast.ftbutilities:FTBUtilities:${ftblib_version}"
 }
 
 processResources {
