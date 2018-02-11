@@ -8,7 +8,6 @@ import com.feed_the_beast.ftblib.lib.data.ForgeTeam;
 import com.feed_the_beast.ftblib.lib.data.Universe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -23,7 +22,6 @@ import java.util.List;
 @EventHandler
 public class TeamIslandsUniverseData
 {
-	public static final ResourceLocation DATA_ID = new ResourceLocation(TeamIslandsFinals.MOD_ID, "data");
 	public static TeamIslandsUniverseData INSTANCE;
 
 	public final Universe universe;
@@ -102,13 +100,13 @@ public class TeamIslandsUniverseData
 			return lobby;
 		}
 
-		return ((TeamIslandsTeamData) team.getData().get(DATA_ID)).getIsland();
+		return ((TeamIslandsTeamData) team.getData().get(TeamIslands.MOD_ID)).getIsland();
 	}
 
 	@SubscribeEvent
 	public static void onUniverseLoaded(UniverseLoadedEvent.Pre event)
 	{
-		INSTANCE = new TeamIslandsUniverseData(event.getUniverse(), event.getData(DATA_ID));
+		INSTANCE = new TeamIslandsUniverseData(event.getUniverse(), event.getData(TeamIslands.MOD_ID));
 	}
 
 	@SubscribeEvent
@@ -139,7 +137,7 @@ public class TeamIslandsUniverseData
 		}
 
 		nbt.setTag("Islands", islands);
-		event.setData(DATA_ID, nbt);
+		event.setData(TeamIslands.MOD_ID, nbt);
 	}
 
 	@SubscribeEvent

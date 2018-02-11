@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 @EventHandler
 public class TeamIslandsEventHandler
 {
-	public static final LangKey LOGIN_TEXT = LangKey.of(TeamIslandsFinals.MOD_ID + ".login_text");
+	public static final LangKey LOGIN_TEXT = LangKey.of(TeamIslands.MOD_ID + ".login_text");
 
 	@SubscribeEvent
 	public static void registerTeamGuiActions(RegisterTeamGuiActionsEvent event)
@@ -34,7 +34,7 @@ public class TeamIslandsEventHandler
 	@SubscribeEvent
 	public static void onTeamData(RegisterDataProvidersEvent.Team event)
 	{
-		event.register(TeamIslandsUniverseData.DATA_ID, team -> new TeamIslandsTeamData(TeamIslandsUniverseData.INSTANCE, team));
+		event.register(TeamIslands.MOD_ID, team -> new TeamIslandsTeamData(TeamIslandsUniverseData.INSTANCE, team));
 	}
 
 	@SubscribeEvent

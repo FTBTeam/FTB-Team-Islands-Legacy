@@ -14,7 +14,7 @@ import net.minecraft.util.text.TextComponentTranslation;
  */
 public class TeamIslandsTeamGuiActions
 {
-	public static final TeamGuiAction TP_LOBBY = new TeamGuiAction(new ResourceLocation(TeamIslandsFinals.MOD_ID, "tp_lobby"), new TextComponentTranslation(TeamIslandsFinals.MOD_ID + ".action.tp_lobby"), GuiIcons.SETTINGS, 0)
+	public static final TeamGuiAction TP_LOBBY = new TeamGuiAction(new ResourceLocation(TeamIslands.MOD_ID, "tp_lobby"), new TextComponentTranslation(TeamIslands.MOD_ID + ".action.tp_lobby"), GuiIcons.SETTINGS, 0)
 	{
 		@Override
 		public boolean isAvailable(ForgeTeam team, ForgePlayer player, NBTTagCompound data)
@@ -31,7 +31,7 @@ public class TeamIslandsTeamGuiActions
 		}
 	};
 
-	public static final TeamGuiAction TP_MY_ISLAND = new TeamGuiAction(new ResourceLocation(TeamIslandsFinals.MOD_ID, "tp_my_island"), new TextComponentTranslation(TeamIslandsFinals.MOD_ID + ".action.tp_my_island"), GuiIcons.SETTINGS, 0)
+	public static final TeamGuiAction TP_MY_ISLAND = new TeamGuiAction(new ResourceLocation(TeamIslands.MOD_ID, "tp_my_island"), new TextComponentTranslation(TeamIslands.MOD_ID + ".action.tp_my_island"), GuiIcons.SETTINGS, 0)
 	{
 		@Override
 		public boolean isAvailable(ForgeTeam team, ForgePlayer player, NBTTagCompound data)

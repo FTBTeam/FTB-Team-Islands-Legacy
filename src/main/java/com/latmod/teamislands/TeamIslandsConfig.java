@@ -12,8 +12,8 @@ import java.util.Random;
 /**
  * @author LatvianModder
  */
-@Mod.EventBusSubscriber(modid = TeamIslandsFinals.MOD_ID)
-@Config(modid = TeamIslandsFinals.MOD_ID, category = "")
+@Mod.EventBusSubscriber(modid = TeamIslands.MOD_ID)
+@Config(modid = TeamIslands.MOD_ID, category = "")
 public class TeamIslandsConfig
 {
 	//@Config.LangKey(GuiLang.LANG_GENERAL)
@@ -69,14 +69,14 @@ public class TeamIslandsConfig
 
 	public static void sync()
 	{
-		ConfigManager.sync(TeamIslandsFinals.MOD_ID, Config.Type.INSTANCE);
+		ConfigManager.sync(TeamIslands.MOD_ID, Config.Type.INSTANCE);
 		islands.blockStates = null;
 	}
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event)
 	{
-		if (event.getModID().equals(TeamIslandsFinals.MOD_ID))
+		if (event.getModID().equals(TeamIslands.MOD_ID))
 		{
 			sync();
 		}
