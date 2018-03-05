@@ -1,4 +1,4 @@
-package com.latmod.teamislands;
+package com.feed_the_beast.teamislands;
 
 import com.feed_the_beast.ftblib.lib.data.ForgeTeam;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,6 +25,7 @@ public class TeamIslandsTeamData implements INBTSerializable<NBTTagCompound>
 		{
 			island = data.getIsland(data.islands.size());
 			island.creator = team.getName();
+			team.markDirty();
 		}
 
 		return island;

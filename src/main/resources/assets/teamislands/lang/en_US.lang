@@ -1,14 +1,21 @@
 teamislands.lobby=Lobby
-teamislands.lobby.enable_teleport_button=Enable Teleport Button
+teamislands.lobby.autoteleport_to_island=Auto-teleport to Island
 
 teamislands.islands=Islands
+teamislands.islands.distance_chunks=Distance Between Islands
+teamislands.islands.dimension=Dimension
 teamislands.islands.height=Height
-teamislands.islands.blocks=Structure Blocks
-teamislands.islands.distance=Distance Between Islands
-teamislands.islands.platform_radius=Platform Radius
+teamislands.islands.structure_id=Structure ID
+teamislands.islands.enable_teleport_button=Enable Teleport Button
 teamislands.islands.autoclaim_radius=Auto-claim Radius
+teamislands.islands.fallback_spawn_x=Fallback Spawn X
+teamislands.islands.fallback_spawn_y=Fallback Spawn Y
+teamislands.islands.fallback_spawn_z=Fallback Spawn Z
 
 teamislands.login_text=Join or create a team to teleport to your island
 
 teamislands.action.tp_lobby=Teleport to Lobby
 teamislands.action.tp_my_island=Teleport to My Island
+
+commands.ftb.teamislands.tpisland.usage=/ftb teamislands tpisland <player>
+commands.ftb.teamislands.tplobby.usage=/ftb teamislands tplobby <player>

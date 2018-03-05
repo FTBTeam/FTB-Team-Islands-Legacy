@@ -1,4 +1,4 @@
-package com.latmod.teamislands;
+package com.feed_the_beast.teamislands;
 
 import com.feed_the_beast.ftblib.FTBLib;
 import net.minecraftforge.fml.common.Mod;
