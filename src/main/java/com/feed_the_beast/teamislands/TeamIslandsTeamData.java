@@ -9,13 +9,11 @@ import net.minecraftforge.common.util.INBTSerializable;
  */
 public class TeamIslandsTeamData implements INBTSerializable<NBTTagCompound>
 {
-	private final TeamIslandsUniverseData data;
 	private Island island = null;
 	private final ForgeTeam team;
 
-	public TeamIslandsTeamData(TeamIslandsUniverseData d, ForgeTeam t)
+	public TeamIslandsTeamData(ForgeTeam t)
 	{
-		data = d;
 		team = t;
 	}
 
@@ -23,7 +21,7 @@ public class TeamIslandsTeamData implements INBTSerializable<NBTTagCompound>
 	{
 		if (island == null)
 		{
-			island = data.getIsland(data.islands.size());
+			island = TeamIslandsUniverseData.INSTANCE.getIsland(TeamIslandsUniverseData.INSTANCE.islands.size());
 			island.creator = team.getName();
 			team.markDirty();
 		}
@@ -42,7 +40,7 @@ public class TeamIslandsTeamData implements INBTSerializable<NBTTagCompound>
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt)
 	{
-		island = data.getIsland(nbt.getInteger("Island"));
+		island = TeamIslandsUniverseData.INSTANCE.getIsland(nbt.getInteger("Island"));
 		island.creator = team.getName();
 	}
 }

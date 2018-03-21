@@ -30,7 +30,7 @@ public class TeamIslandsEventHandler
 	@SubscribeEvent
 	public static void registerTeamData(ForgeTeamDataEvent event)
 	{
-		event.register(TeamIslands.MOD_ID, new TeamIslandsTeamData(TeamIslandsUniverseData.INSTANCE, event.getTeam()));
+		event.register(TeamIslands.MOD_ID, new TeamIslandsTeamData(event.getTeam()));
 	}
 
 	@SubscribeEvent
