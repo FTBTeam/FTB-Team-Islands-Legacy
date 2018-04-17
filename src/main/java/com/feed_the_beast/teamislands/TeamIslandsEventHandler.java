@@ -7,8 +7,8 @@ import com.feed_the_beast.ftblib.events.team.ForgeTeamDeletedEvent;
 import com.feed_the_beast.ftblib.events.team.ForgeTeamPlayerJoinedEvent;
 import com.feed_the_beast.ftblib.events.team.ForgeTeamPlayerLeftEvent;
 import com.feed_the_beast.ftblib.lib.EventHandler;
-import com.feed_the_beast.ftblib.lib.block.BlockFlags;
 import com.feed_the_beast.ftblib.lib.data.Universe;
+import com.feed_the_beast.ftblib.lib.util.CommonUtils;
 import com.feed_the_beast.ftblib.lib.util.LangKey;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -59,7 +59,7 @@ public class TeamIslandsEventHandler
 			World w = TeamIslandsConfig.islands.dimension == 0 ? event.getUniverse().world : event.getUniverse().server.getWorld(TeamIslandsConfig.islands.dimension);
 			BlockPos pos = island.getBlockPos().getBlockPos();
 			TeamIslandsUniverseData.INSTANCE.islandTemplate.addBlocksToWorldChunk(w, pos, new PlacementSettings());
-			w.notifyBlockUpdate(pos, w.getBlockState(pos), w.getBlockState(pos), BlockFlags.DEFAULT);
+			CommonUtils.notifyBlockUpdate(w, pos, null);
 			w.notifyLightSet(pos);
 
 			island.spawnPoint = island.spawnPoint.offset(EnumFacing.UP);
