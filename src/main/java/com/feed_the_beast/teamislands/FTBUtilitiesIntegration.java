@@ -25,16 +25,20 @@ public class FTBUtilitiesIntegration
 		if (r > 0 && ClaimedChunks.instance != null)
 		{
 			Island island = TeamIslandsUniverseData.INSTANCE.getIsland(event.getTeam());
-			FTBUTeamData data = FTBUTeamData.get(event.getTeam());
 
 			if (!island.isLobby())
 			{
-				int chunks = Math.min((r * 2 + 1) * (r * 2 + 1), data.getMaxClaimChunks());
+				int chunks = Math.min((r * 2 + 1) * (r * 2 + 1), FTBUTeamData.get(event.getTeam()).getMaxClaimChunks());
 
 				for (int i = 0; i <= chunks; i++)
 				{
-					ChunkPos pos = MathUtils.getSpiralPoint(i);
-					ClaimedChunks.instance.claimChunk(data, new ChunkDimPos(island.pos.posX + pos.x, island.pos.posZ + pos.z, island.pos.dim));
+					ChunkPos pos0 = MathUtils.getSpiralPoint(i);
+					ChunkDimPos pos = new ChunkDimPos(island.pos.posX + pos0.x, island.pos.posZ + pos0.z, island.pos.dim);
+
+					if (ClaimedChunks.instance.canPlayerModify(event.getPlayer(), pos))
+					{
+						ClaimedChunks.instance.claimChunk(event.getPlayer(), pos, true);
+					}
 				}
 			}
 		}
