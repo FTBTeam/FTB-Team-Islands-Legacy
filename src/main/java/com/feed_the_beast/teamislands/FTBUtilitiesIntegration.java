@@ -6,7 +6,7 @@ import com.feed_the_beast.ftblib.lib.math.ChunkDimPos;
 import com.feed_the_beast.ftblib.lib.math.MathUtils;
 import com.feed_the_beast.ftbutilities.FTBUtilities;
 import com.feed_the_beast.ftbutilities.data.ClaimedChunks;
-import com.feed_the_beast.ftbutilities.data.FTBUTeamData;
+import com.feed_the_beast.ftbutilities.data.FTBUtilitiesTeamData;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -28,7 +28,7 @@ public class FTBUtilitiesIntegration
 
 			if (!island.isLobby())
 			{
-				int chunks = Math.min((r * 2 + 1) * (r * 2 + 1), FTBUTeamData.get(event.getTeam()).getMaxClaimChunks());
+				int chunks = Math.min((r * 2 + 1) * (r * 2 + 1), FTBUtilitiesTeamData.get(event.getTeam()).getMaxClaimChunks());
 
 				for (int i = 0; i <= chunks; i++)
 				{
