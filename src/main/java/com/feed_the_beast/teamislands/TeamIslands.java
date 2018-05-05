@@ -1,6 +1,5 @@
 package com.feed_the_beast.teamislands;
 
-import com.feed_the_beast.ftblib.FTBLib;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 		version = TeamIslands.VERSION,
 		acceptableRemoteVersions = "*",
 		acceptedMinecraftVersions = "[1.12,)",
-		dependencies = "required-after:" + FTBLib.MOD_ID
+		dependencies = "required-after:ftblib"
 )
 public class TeamIslands
 {

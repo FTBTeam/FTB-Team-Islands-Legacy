@@ -9,7 +9,6 @@ import com.feed_the_beast.ftblib.events.team.ForgeTeamPlayerLeftEvent;
 import com.feed_the_beast.ftblib.lib.EventHandler;
 import com.feed_the_beast.ftblib.lib.data.Universe;
 import com.feed_the_beast.ftblib.lib.util.CommonUtils;
-import com.feed_the_beast.ftblib.lib.util.LangKey;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -17,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.server.command.TextComponentHelper;
 
 /**
  * @author LatvianModder
@@ -24,7 +24,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 @EventHandler
 public class TeamIslandsEventHandler
 {
-	public static final LangKey LOGIN_TEXT = LangKey.of(TeamIslands.MOD_ID + ".login_text");
 	public static final ResourceLocation LOGIN_LOBBY = new ResourceLocation(TeamIslands.MOD_ID, "lobby");
 
 	@SubscribeEvent
@@ -42,7 +41,7 @@ public class TeamIslandsEventHandler
 
 			if (!event.getPlayer().hasTeam())
 			{
-				LOGIN_TEXT.sendMessage(event.getPlayer().getPlayer());
+				event.getPlayer().getPlayer().sendMessage(TextComponentHelper.createComponentTranslation(event.getPlayer().getPlayer(), TeamIslands.MOD_ID + ".login_text"));
 			}
 		}
 	}

@@ -39,7 +39,7 @@ public class TeamIslandsConfig
 		@Config.Comment({"Height at which the islands will generate.", "-1 = auto, on top of highest block in world"})
 		public int height = 80;
 
-		@Config.Comment({"Structure ID that will be generated when island is created.", "If not set, \"" + TeamIslands.MOD_ID + ":teamislands_island\" will be used."})
+		@Config.Comment({"Structure ID that will be generated when island is created.", "If not set, \"teamislands:teamislands_island\" will be used."})
 		@Config.RequiresWorldRestart
 		public String structure_id = "";
 
