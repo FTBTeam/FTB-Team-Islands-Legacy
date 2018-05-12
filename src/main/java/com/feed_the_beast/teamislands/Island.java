@@ -94,11 +94,11 @@ public class Island
 				spawnpoint = spawnpoint.up(2);
 			}
 
-			ServerUtils.teleportEntity(entity, spawnpoint, TeamIslandsConfig.lobby.dimension);
+			ServerUtils.teleportEntity(data.universe.server, entity, spawnpoint, TeamIslandsConfig.lobby.dimension);
 		}
 		else
 		{
-			ServerUtils.teleportEntity(entity, spawnPoint.add(data.relativeSpawn), TeamIslandsConfig.islands.dimension);
+			ServerUtils.teleportEntity(data.universe.server, entity, spawnPoint.add(data.relativeSpawn), TeamIslandsConfig.islands.dimension);
 		}
 	}
 
