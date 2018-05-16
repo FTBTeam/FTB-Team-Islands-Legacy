@@ -3,7 +3,7 @@ package com.feed_the_beast.teamislands;
 import com.feed_the_beast.ftblib.lib.math.BlockDimPos;
 import com.feed_the_beast.ftblib.lib.math.ChunkDimPos;
 import com.feed_the_beast.ftblib.lib.math.MathUtils;
-import com.feed_the_beast.ftblib.lib.util.ServerUtils;
+import com.feed_the_beast.ftblib.lib.math.TeleporterDimPos;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -94,11 +94,11 @@ public class Island
 				spawnpoint = spawnpoint.up(2);
 			}
 
-			ServerUtils.teleportEntity(data.universe.server, entity, spawnpoint, TeamIslandsConfig.lobby.dimension);
+			TeleporterDimPos.of(spawnpoint, TeamIslandsConfig.lobby.dimension).teleport(entity);
 		}
 		else
 		{
-			ServerUtils.teleportEntity(data.universe.server, entity, spawnPoint.add(data.relativeSpawn), TeamIslandsConfig.islands.dimension);
+			TeleporterDimPos.of(spawnPoint.add(data.relativeSpawn), TeamIslandsConfig.islands.dimension).teleport(entity);
 		}
 	}
 
