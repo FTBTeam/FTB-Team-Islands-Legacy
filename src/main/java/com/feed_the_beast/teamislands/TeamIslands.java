@@ -1,8 +1,13 @@
 package com.feed_the_beast.teamislands;
 
+import com.feed_the_beast.ftblib.lib.util.SidedUtils;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.annotation.Nullable;
 
 @Mod(
 		modid = TeamIslands.MOD_ID,
@@ -18,4 +23,9 @@ public class TeamIslands
 	public static final String MOD_NAME = "Team Islands";
 	public static final String VERSION = "@VERSION@";
 	public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
+
+	public static ITextComponent lang(@Nullable ICommandSender sender, String key, Object... args)
+	{
+		return SidedUtils.lang(sender, MOD_ID, key, args);
+	}
 }

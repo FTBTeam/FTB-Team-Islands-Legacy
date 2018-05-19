@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-import net.minecraftforge.server.command.TextComponentHelper;
 
 /**
  * @author LatvianModder
@@ -41,7 +40,7 @@ public class TeamIslandsEventHandler
 
 			if (!event.getPlayer().hasTeam())
 			{
-				event.getPlayer().getPlayer().sendMessage(TextComponentHelper.createComponentTranslation(event.getPlayer().getPlayer(), TeamIslands.MOD_ID + ".login_text"));
+				event.getPlayer().getPlayer().sendMessage(TeamIslands.lang(event.getPlayer().getPlayer(), TeamIslands.MOD_ID + ".login_text"));
 			}
 		}
 	}

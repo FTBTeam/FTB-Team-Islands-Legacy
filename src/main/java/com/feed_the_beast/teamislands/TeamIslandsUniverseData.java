@@ -60,7 +60,7 @@ public class TeamIslandsUniverseData
 
 		if (TeamIslandsConfig.islands.structure_id.trim().isEmpty())
 		{
-			structureId = new ResourceLocation(TeamIslands.MOD_ID + ":teamislands_island");
+			structureId = new ResourceLocation(TeamIslands.MOD_ID, "teamislands_island");
 		}
 		else
 		{
