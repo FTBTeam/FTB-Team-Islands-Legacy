@@ -1,6 +1,5 @@
 package com.feed_the_beast.teamislands;
 
-import com.feed_the_beast.ftblib.events.RegisterFTBCommandsEvent;
 import com.feed_the_beast.ftblib.events.player.ForgePlayerLoggedInEvent;
 import com.feed_the_beast.ftblib.events.team.ForgeTeamDataEvent;
 import com.feed_the_beast.ftblib.events.team.ForgeTeamDeletedEvent;
@@ -108,11 +107,5 @@ public class TeamIslandsEventHandler
 				island.teleport(event.player);
 			}
 		}
-	}
-
-	@SubscribeEvent
-	public static void registerCommands(RegisterFTBCommandsEvent event)
-	{
-		event.add(new CmdTeamIslands());
 	}
 }

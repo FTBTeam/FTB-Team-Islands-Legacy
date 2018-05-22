@@ -4,6 +4,7 @@ import com.feed_the_beast.ftblib.lib.util.SidedUtils;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,5 +28,11 @@ public class TeamIslands
 	public static ITextComponent lang(@Nullable ICommandSender sender, String key, Object... args)
 	{
 		return SidedUtils.lang(sender, MOD_ID, key, args);
+	}
+
+	@Mod.EventHandler
+	public void onServerStarting(FMLServerStartingEvent event)
+	{
+		event.registerServerCommand(new CmdTeamIslands());
 	}
 }
