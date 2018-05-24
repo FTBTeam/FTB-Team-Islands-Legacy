@@ -17,5 +17,5 @@ teamislands.login_text=Join or create a team to teleport to your island
 teamislands.action.tp_lobby=Teleport to Lobby
 teamislands.action.tp_my_island=Teleport to My Island
 
-commands.ftb.teamislands.tpisland.usage=/ftb teamislands tpisland <player>
-commands.ftb.teamislands.tplobby.usage=/ftb teamislands tplobby <player>
+commands.ftb.teamislands.tpisland.usage=/teamislands tpisland <player>
+commands.ftb.teamislands.tplobby.usage=/teamislands tplobby <player>
