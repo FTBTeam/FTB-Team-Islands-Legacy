@@ -1,7 +1,8 @@
 package com.feed_the_beast.teamislands;
 
-import com.feed_the_beast.ftblib.lib.cmd.CmdBase;
-import com.feed_the_beast.ftblib.lib.cmd.CmdTreeBase;
+import com.feed_the_beast.ftblib.lib.command.CmdBase;
+import com.feed_the_beast.ftblib.lib.command.CmdTreeBase;
+import com.feed_the_beast.ftblib.lib.command.CommandUtils;
 import com.feed_the_beast.ftblib.lib.data.ForgePlayer;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -36,7 +37,7 @@ public class CmdTeamIslands extends CmdTreeBase
 		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
 		{
 			checkArgs(sender, args, 1);
-			ForgePlayer player = getForgePlayer(sender, args[0]);
+			ForgePlayer player = CommandUtils.getForgePlayer(sender, args[0]);
 
 			if (player.isOnline() && player.hasTeam())
 			{

@@ -2,16 +2,19 @@ buildscript {
 	repositories {
 		jcenter()
 		maven { url = "http://files.minecraftforge.net/maven" }
-		maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
+		maven { url "https://plugins.gradle.org/m2/" }
 	}
 	dependencies {
 		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-		classpath 'com.matthewprenger:CurseGradle:1.0-SNAPSHOT'
+		classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.1.0'
 	}
 }
+
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'com.matthewprenger.cursegradle'
 apply plugin: 'maven'
+
+apply from: 'https://raw.githubusercontent.com/MinecraftModDevelopment/Gradle-Collection/master/generic/markdown-git-changelog.gradle'
 
 def ENV = System.getenv()
 version = ENV.BUILD_NUMBER ? "${mod_version}.${ENV.BUILD_NUMBER}" : "${mod_version}.custom"
@@ -28,11 +31,12 @@ minecraft {
 	runDir = "run"
 	mappings = "${mappings_version}"
 
-	replace "@VERSION@", project.version
+	replace "0.0.0.teamislands", project.version
 	replaceIn "${mod_reference}"
 }
 
 repositories {
+	mavenLocal()
 	maven { url "https://maven.latmod.com/" }
 }
 
@@ -77,9 +81,12 @@ if (ENV.CURSEFORGE_KEY) {
 			releaseType = "release"
 			addGameVersion "${mc_version}"
 			relations {
-				requiredLibrary 'ftblib'
-				requiredLibrary 'ftb-utilities'
+				requiredDependency 'ftblib'
+				optionalDependency 'ftb-utilities'
 			}
+			changelog = getGitChangelog
+			changelogType = 'markdown'
+			addArtifact(sourceJar)
 		}
 	}
 }

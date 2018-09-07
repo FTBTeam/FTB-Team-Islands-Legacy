@@ -2,8 +2,6 @@ teamislands.lobby=Lobby
 teamislands.lobby.autoteleport_to_island=Auto-teleport to Island
 
 teamislands.islands=Islands
-teamislands.islands.distance_chunks=Distance Between Islands
-teamislands.islands.dimension=Dimension
 teamislands.islands.height=Height
 teamislands.islands.structure_id=Structure ID
 teamislands.islands.enable_teleport_button=Enable Teleport Button

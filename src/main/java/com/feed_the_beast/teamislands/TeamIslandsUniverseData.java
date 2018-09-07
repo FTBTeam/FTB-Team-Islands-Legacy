@@ -4,12 +4,10 @@ import com.feed_the_beast.ftblib.FTBLibConfig;
 import com.feed_the_beast.ftblib.events.universe.UniverseClosedEvent;
 import com.feed_the_beast.ftblib.events.universe.UniverseLoadedEvent;
 import com.feed_the_beast.ftblib.events.universe.UniverseSavedEvent;
-import com.feed_the_beast.ftblib.lib.EventHandler;
 import com.feed_the_beast.ftblib.lib.data.ForgeTeam;
 import com.feed_the_beast.ftblib.lib.data.Universe;
-import com.feed_the_beast.ftblib.lib.math.ChunkDimPos;
 import com.feed_the_beast.ftblib.lib.math.MathUtils;
-import com.feed_the_beast.ftblib.lib.util.FileUtils;
+import com.feed_the_beast.ftblib.lib.util.NBTUtils;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -19,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
@@ -30,7 +29,7 @@ import java.util.List;
 /**
  * @author LatvianModder
  */
-@EventHandler
+@Mod.EventBusSubscriber(modid = TeamIslands.MOD_ID)
 public class TeamIslandsUniverseData
 {
 	public static TeamIslandsUniverseData INSTANCE;
@@ -44,7 +43,7 @@ public class TeamIslandsUniverseData
 	public TeamIslandsUniverseData(Universe u, NBTTagCompound nbt)
 	{
 		universe = u;
-		lobby = new Island(this, 0, new ChunkDimPos(0, 0, TeamIslandsConfig.lobby.dimension), "server");
+		lobby = new Island(this, 0, 0, 0, "server");
 		lobby.spawned = true;
 		islands = new ArrayList<>();
 		islands.add(lobby);
@@ -69,11 +68,11 @@ public class TeamIslandsUniverseData
 
 		islandTemplate = universe.world.getSaveHandler().getStructureTemplateManager().getTemplate(universe.server, structureId);
 
-		NBTTagCompound nbt1 = FileUtils.readNBT(new File(universe.world.getSaveHandler().getWorldDirectory(), "structures/" + structureId.getResourcePath() + ".nbt"));
+		NBTTagCompound nbt1 = NBTUtils.readNBT(new File(universe.world.getSaveHandler().getWorldDirectory(), "structures/" + structureId.getPath() + ".nbt"));
 
 		if (nbt1 == null)
 		{
-			try (InputStream stream = MinecraftServer.class.getResourceAsStream("/assets/" + structureId.getResourceDomain() + "/structures/" + structureId.getResourcePath() + ".nbt"))
+			try (InputStream stream = MinecraftServer.class.getResourceAsStream("/assets/" + structureId.getNamespace() + "/structures/" + structureId.getPath() + ".nbt"))
 			{
 				nbt1 = CompressedStreamTools.readCompressed(stream);
 			}
@@ -105,7 +104,7 @@ public class TeamIslandsUniverseData
 		if (island == null)
 		{
 			ChunkPos pos = MathUtils.getSpiralPoint(id + 1);
-			island = new Island(this, islands.size(), new ChunkDimPos(pos.x * TeamIslandsConfig.islands.distance_chunks, pos.z * TeamIslandsConfig.islands.distance_chunks, TeamIslandsConfig.islands.dimension), "server");
+			island = new Island(this, islands.size(), pos.x, pos.z, "server");
 			islands.add(island);
 			universe.markDirty();
 		}
@@ -120,7 +119,7 @@ public class TeamIslandsUniverseData
 			return lobby;
 		}
 
-		return ((TeamIslandsTeamData) team.getData(TeamIslands.MOD_ID)).getIsland();
+		return ((TeamIslandsTeamData) team.getData().get(TeamIslands.MOD_ID)).getIsland();
 	}
 
 	@SubscribeEvent

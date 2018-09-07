@@ -1,13 +1,9 @@
 package com.feed_the_beast.teamislands;
 
-import com.feed_the_beast.ftblib.lib.math.BlockDimPos;
-import com.feed_the_beast.ftblib.lib.math.ChunkDimPos;
-import com.feed_the_beast.ftblib.lib.math.MathUtils;
 import com.feed_the_beast.ftblib.lib.math.TeleporterDimPos;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldServer;
 
 /**
  * @author LatvianModder
@@ -16,30 +12,29 @@ public class Island
 {
 	public final TeamIslandsUniverseData data;
 	public final int id;
-	public final ChunkDimPos pos;
+	public final int x, z;
 	public boolean active, spawned;
 	public String creator;
 	public BlockPos spawnPoint;
 
-	public Island(TeamIslandsUniverseData d, int i, ChunkDimPos p, String c)
+	public Island(TeamIslandsUniverseData d, int i, int _x, int _z, String c)
 	{
 		data = d;
 		id = i;
-		pos = p;
+		x = _x;
+		z = _z;
 		active = true;
 		spawned = false;
 		creator = c;
-		spawnPoint = new BlockPos(pos.getBlockX(), TeamIslandsConfig.islands.height, pos.getBlockZ());
+		spawnPoint = new BlockPos(x * 512 + 256, TeamIslandsConfig.islands.height, z * 512 + 256);
 	}
 
 	public Island(TeamIslandsUniverseData d, int i, NBTTagCompound nbt)
 	{
 		data = d;
 		id = i;
-		int x = nbt.hasKey("X") ? (nbt.getInteger("X") * TeamIslandsConfig.islands.distance_chunks) : nbt.getInteger("ChunkX");
-		int z = nbt.hasKey("Z") ? (nbt.getInteger("Z") * TeamIslandsConfig.islands.distance_chunks) : nbt.getInteger("ChunkZ");
-		int dim = nbt.hasKey("Dim") ? nbt.getInteger("Dim") : TeamIslandsConfig.islands.dimension;
-		pos = new ChunkDimPos(x, z, dim);
+		x = nbt.getInteger("X");
+		z = nbt.getInteger("Z");
 		active = !nbt.getBoolean("Inactive");
 		spawned = nbt.getBoolean("Spawned");
 		creator = nbt.getString("Creator");
@@ -48,9 +43,8 @@ public class Island
 
 	public void writeToNBT(NBTTagCompound nbt)
 	{
-		nbt.setInteger("ChunkX", pos.posX);
-		nbt.setInteger("ChunkZ", pos.posZ);
-		nbt.setInteger("Dim", pos.dim);
+		nbt.setInteger("X", x);
+		nbt.setInteger("Z", z);
 		nbt.setBoolean("Inactive", !active);
 		nbt.setBoolean("Spawned", spawned);
 		nbt.setString("Creator", creator);
@@ -64,57 +58,39 @@ public class Island
 		return id <= 0;
 	}
 
-	public BlockDimPos getBlockPos()
+	public BlockPos getBlockPos()
 	{
 		if (isLobby())
 		{
-			WorldServer w = data.universe.server.getWorld(TeamIslandsConfig.lobby.dimension);
-			BlockPos spawnpoint = w.getSpawnPoint();
+			BlockPos spawnpoint = data.universe.world.getSpawnPoint();
 
-			while (w.getBlockState(spawnpoint).isFullCube())
+			while (data.universe.world.getBlockState(spawnpoint).isFullCube())
 			{
-				spawnpoint = spawnpoint.up(2);
+				spawnpoint = spawnpoint.up();
 			}
 
-			return new BlockDimPos(spawnpoint, TeamIslandsConfig.lobby.dimension);
+			return spawnpoint;
 		}
 
-		return new BlockDimPos(spawnPoint, TeamIslandsConfig.islands.dimension);
+		return spawnPoint;
 	}
 
 	public void teleport(Entity entity)
 	{
 		if (isLobby())
 		{
-			WorldServer w = data.universe.server.getWorld(TeamIslandsConfig.lobby.dimension);
-			BlockPos spawnpoint = w.getSpawnPoint();
+			BlockPos spawnpoint = data.universe.world.getSpawnPoint();
 
-			while (w.getBlockState(spawnpoint).isFullCube())
+			while (data.universe.world.getBlockState(spawnpoint).isFullCube())
 			{
-				spawnpoint = spawnpoint.up(2);
+				spawnpoint = spawnpoint.up();
 			}
 
-			TeleporterDimPos.of(spawnpoint, TeamIslandsConfig.lobby.dimension).teleport(entity);
+			TeleporterDimPos.of(spawnpoint, 0).teleport(entity);
 		}
 		else
 		{
-			TeleporterDimPos.of(spawnPoint.add(data.relativeSpawn), TeamIslandsConfig.islands.dimension).teleport(entity);
+			TeleporterDimPos.of(spawnPoint.add(data.relativeSpawn), 0).teleport(entity);
 		}
-	}
-
-	public boolean isInside(Entity entity)
-	{
-		return isInside(entity.posX, entity.posZ, entity.dimension);
-	}
-
-	public boolean isInside(double px, double pz, int dim)
-	{
-		if (dim != (isLobby() ? TeamIslandsConfig.lobby.dimension : TeamIslandsConfig.islands.dimension))
-		{
-			return true;
-		}
-
-		double s = TeamIslandsConfig.islands.distance_chunks * 8D;
-		return MathUtils.distSq(px, pz, pos.getBlockX(), pos.getBlockZ()) < s * s;
 	}
 }

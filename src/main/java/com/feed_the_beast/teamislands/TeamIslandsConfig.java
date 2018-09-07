@@ -18,23 +18,12 @@ public class TeamIslandsConfig
 
 	public static class Lobby
 	{
-		@Config.Comment("Starting dimension")
-		@Config.LangKey("teamislands.islands.dimension")
-		public int dimension = 0;
-
 		@Config.Comment("Auto-teleports player to their island once they join a team.")
 		public boolean autoteleport_to_island = true;
 	}
 
 	public static class Islands
 	{
-		@Config.RangeInt(min = 3, max = 1000)
-		@Config.Comment("Distance between islands in chunks.")
-		public int distance_chunks = 100;
-
-		@Config.Comment("Dimension where islands will be created.")
-		public int dimension = 0;
-
 		@Config.RangeInt(min = -1, max = 255)
 		@Config.Comment({"Height at which the islands will generate.", "-1 = auto, on top of highest block in world"})
 		public int height = 80;

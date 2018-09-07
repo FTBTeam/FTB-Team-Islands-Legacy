@@ -1,20 +1,25 @@
 package com.feed_the_beast.teamislands;
 
 import com.feed_the_beast.ftblib.lib.data.ForgeTeam;
+import com.feed_the_beast.ftblib.lib.data.TeamData;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.INBTSerializable;
 
 /**
  * @author LatvianModder
  */
-public class TeamIslandsTeamData implements INBTSerializable<NBTTagCompound>
+public class TeamIslandsTeamData extends TeamData
 {
 	private Island island = null;
-	private final ForgeTeam team;
 
-	public TeamIslandsTeamData(ForgeTeam t)
+	public TeamIslandsTeamData(ForgeTeam team)
 	{
-		team = t;
+		super(team);
+	}
+
+	@Override
+	public String getName()
+	{
+		return TeamIslands.MOD_ID;
 	}
 
 	public Island getIsland()

@@ -5,21 +5,23 @@ import com.feed_the_beast.ftblib.events.team.ForgeTeamDataEvent;
 import com.feed_the_beast.ftblib.events.team.ForgeTeamDeletedEvent;
 import com.feed_the_beast.ftblib.events.team.ForgeTeamPlayerJoinedEvent;
 import com.feed_the_beast.ftblib.events.team.ForgeTeamPlayerLeftEvent;
-import com.feed_the_beast.ftblib.lib.EventHandler;
 import com.feed_the_beast.ftblib.lib.data.Universe;
-import com.feed_the_beast.ftblib.lib.util.CommonUtils;
+import com.feed_the_beast.ftblib.lib.util.BlockUtils;
+import com.feed_the_beast.ftbutilities.FTBUtilities;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 /**
  * @author LatvianModder
  */
-@EventHandler
+@Mod.EventBusSubscriber(modid = TeamIslands.MOD_ID)
 public class TeamIslandsEventHandler
 {
 	public static final ResourceLocation LOGIN_LOBBY = new ResourceLocation(TeamIslands.MOD_ID, "lobby");
@@ -27,7 +29,7 @@ public class TeamIslandsEventHandler
 	@SubscribeEvent
 	public static void registerTeamData(ForgeTeamDataEvent event)
 	{
-		event.register(TeamIslands.MOD_ID, new TeamIslandsTeamData(event.getTeam()));
+		event.register(new TeamIslandsTeamData(event.getTeam()));
 	}
 
 	@SubscribeEvent
@@ -53,10 +55,10 @@ public class TeamIslandsEventHandler
 		{
 			island.spawned = true;
 
-			World w = TeamIslandsConfig.islands.dimension == 0 ? event.getUniverse().world : event.getUniverse().server.getWorld(TeamIslandsConfig.islands.dimension);
-			BlockPos pos = island.getBlockPos().getBlockPos();
+			World w = event.getUniverse().world;
+			BlockPos pos = island.getBlockPos();
 			TeamIslandsUniverseData.INSTANCE.islandTemplate.addBlocksToWorldChunk(w, pos, new PlacementSettings());
-			CommonUtils.notifyBlockUpdate(w, pos, null);
+			BlockUtils.notifyBlockUpdate(w, pos, null);
 			w.notifyLightSet(pos);
 
 			island.spawnPoint = island.spawnPoint.offset(EnumFacing.UP);
@@ -72,6 +74,11 @@ public class TeamIslandsEventHandler
 		if (TeamIslandsConfig.lobby.autoteleport_to_island && event.getPlayer().isOnline())
 		{
 			island.teleport(event.getPlayer().getPlayer());
+		}
+
+		if (Loader.isModLoaded(FTBUtilities.MOD_ID))
+		{
+			FTBUtilitiesIntegration.onPlayerJoinedTeam(event);
 		}
 	}
 
@@ -102,7 +109,7 @@ public class TeamIslandsEventHandler
 		{
 			Island island = TeamIslandsUniverseData.INSTANCE.getIsland(Universe.get().getPlayer(event.player).team);
 
-			if (event.player.getBedLocation(island.pos.dim) == null)
+			if (event.player.getBedLocation(0) == null)
 			{
 				island.teleport(event.player);
 			}
