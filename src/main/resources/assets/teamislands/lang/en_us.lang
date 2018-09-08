@@ -1,3 +1,6 @@
+teamislands.general.enabled_singleplayer=Enabled in Singleplayer
+teamislands.general.enabled_multiplayer=Enabled in Multiplayer
+
 teamislands.lobby=Lobby
 teamislands.lobby.autoteleport_to_island=Auto-teleport to Island
 
@@ -9,11 +12,6 @@ teamislands.islands.autoclaim_radius=Auto-claim Radius
 teamislands.islands.fallback_spawn_x=Fallback Spawn X
 teamislands.islands.fallback_spawn_y=Fallback Spawn Y
 teamislands.islands.fallback_spawn_z=Fallback Spawn Z
-
-teamislands.login_text=Join or create a team to teleport to your island
-
-teamislands.action.tp_lobby=Teleport to Lobby
-teamislands.action.tp_my_island=Teleport to My Island
 
 commands.ftb.teamislands.tpisland.usage=/teamislands tpisland <player>
 commands.ftb.teamislands.tplobby.usage=/teamislands tplobby <player>

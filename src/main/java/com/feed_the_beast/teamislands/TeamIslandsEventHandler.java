@@ -1,6 +1,5 @@
 package com.feed_the_beast.teamislands;
 
-import com.feed_the_beast.ftblib.events.player.ForgePlayerLoggedInEvent;
 import com.feed_the_beast.ftblib.events.team.ForgeTeamDataEvent;
 import com.feed_the_beast.ftblib.events.team.ForgeTeamDeletedEvent;
 import com.feed_the_beast.ftblib.events.team.ForgeTeamPlayerJoinedEvent;
@@ -8,8 +7,8 @@ import com.feed_the_beast.ftblib.events.team.ForgeTeamPlayerLeftEvent;
 import com.feed_the_beast.ftblib.lib.data.Universe;
 import com.feed_the_beast.ftblib.lib.util.BlockUtils;
 import com.feed_the_beast.ftbutilities.FTBUtilities;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
@@ -24,8 +23,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 @Mod.EventBusSubscriber(modid = TeamIslands.MOD_ID)
 public class TeamIslandsEventHandler
 {
-	public static final ResourceLocation LOGIN_LOBBY = new ResourceLocation(TeamIslands.MOD_ID, "lobby");
-
 	@SubscribeEvent
 	public static void registerTeamData(ForgeTeamDataEvent event)
 	{
@@ -33,22 +30,13 @@ public class TeamIslandsEventHandler
 	}
 
 	@SubscribeEvent
-	public static void onPlayerLoggedIn(ForgePlayerLoggedInEvent event)
-	{
-		if (event.isFirstLogin(LOGIN_LOBBY))
-		{
-			TeamIslandsUniverseData.INSTANCE.getIsland(0).teleport(event.getPlayer().getPlayer());
-
-			if (!event.getPlayer().hasTeam())
-			{
-				event.getPlayer().getPlayer().sendMessage(TeamIslands.lang(event.getPlayer().getPlayer(), TeamIslands.MOD_ID + ".login_text"));
-			}
-		}
-	}
-
-	@SubscribeEvent
 	public static void onPlayerJoinedTeam(ForgeTeamPlayerJoinedEvent event)
 	{
+		if (!TeamIslandsConfig.general.isEnabled(event.getUniverse().server))
+		{
+			return;
+		}
+
 		Island island = TeamIslandsUniverseData.INSTANCE.getIsland(event.getTeam());
 
 		if (!island.spawned)
@@ -85,7 +73,7 @@ public class TeamIslandsEventHandler
 	@SubscribeEvent
 	public static void onPlayerLeftTeam(ForgeTeamPlayerLeftEvent event)
 	{
-		if (event.getPlayer().isOnline())
+		if (TeamIslandsConfig.general.isEnabled(event.getUniverse().server) && event.getPlayer().isOnline())
 		{
 			TeamIslandsUniverseData.INSTANCE.getIsland(0).teleport(event.getPlayer().getPlayer());
 		}
@@ -94,6 +82,11 @@ public class TeamIslandsEventHandler
 	@SubscribeEvent
 	public static void onTeamDeleted(ForgeTeamDeletedEvent event)
 	{
+		if (!TeamIslandsConfig.general.isEnabled(event.getUniverse().server))
+		{
+			return;
+		}
+
 		Island island = TeamIslandsUniverseData.INSTANCE.getIsland(event.getTeam());
 
 		if (!island.isLobby())
@@ -105,7 +98,7 @@ public class TeamIslandsEventHandler
 	@SubscribeEvent
 	public static void onPlayerRespawned(PlayerEvent.PlayerRespawnEvent event)
 	{
-		if (Universe.loaded() && !event.player.world.isRemote)
+		if (Universe.loaded() && !event.player.world.isRemote && TeamIslandsConfig.general.isEnabled(((EntityPlayerMP) event.player).server))
 		{
 			Island island = TeamIslandsUniverseData.INSTANCE.getIsland(Universe.get().getPlayer(event.player).team);
 

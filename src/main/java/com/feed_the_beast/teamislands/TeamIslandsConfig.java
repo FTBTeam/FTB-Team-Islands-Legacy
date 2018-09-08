@@ -1,5 +1,6 @@
 package com.feed_the_beast.teamislands;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -13,8 +14,22 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Config(modid = TeamIslands.MOD_ID, category = "")
 public class TeamIslandsConfig
 {
+	@Config.LangKey("stat.generalButton")
+	public static final General general = new General();
+
 	public static final Lobby lobby = new Lobby();
 	public static final Islands islands = new Islands();
+
+	public static class General
+	{
+		public boolean enabled_singleplayer = false;
+		public boolean enabled_multiplayer = true;
+
+		public boolean isEnabled(MinecraftServer server)
+		{
+			return server.isDedicatedServer() ? enabled_multiplayer : enabled_singleplayer;
+		}
+	}
 
 	public static class Lobby
 	{
