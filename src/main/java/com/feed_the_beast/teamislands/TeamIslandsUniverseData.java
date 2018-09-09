@@ -81,9 +81,9 @@ public class TeamIslandsUniverseData
 			}
 		}
 
-		int sx = nbt1 != null && nbt1.hasKey("spawn_x") ? nbt1.getInteger("spawn_x") : TeamIslandsConfig.islands.fallback_spawn_x;
-		int sy = nbt1 != null && nbt1.hasKey("spawn_y") ? nbt1.getInteger("spawn_y") : TeamIslandsConfig.islands.fallback_spawn_y;
-		int sz = nbt1 != null && nbt1.hasKey("spawn_z") ? nbt1.getInteger("spawn_z") : TeamIslandsConfig.islands.fallback_spawn_z;
+		int sx = nbt1 != null && nbt1.hasKey("spawn_x") ? nbt1.getInteger("spawn_x") : islandTemplate.getSize().getX() / 2;
+		int sy = nbt1 != null && nbt1.hasKey("spawn_y") ? nbt1.getInteger("spawn_y") : islandTemplate.getSize().getY();
+		int sz = nbt1 != null && nbt1.hasKey("spawn_z") ? nbt1.getInteger("spawn_z") : islandTemplate.getSize().getZ() / 2;
 		relativeSpawn = new BlockPos(sx, sy, sz);
 
 		if (FTBLibConfig.debugging.print_more_info)

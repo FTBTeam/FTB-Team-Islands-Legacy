@@ -1,5 +1,6 @@
 teamislands.general.enabled_singleplayer=Enabled in Singleplayer
 teamislands.general.enabled_multiplayer=Enabled in Multiplayer
+teamislands.general.clear_inv_when_team_left=Clear Inventory After Leaving the Team
 
 teamislands.lobby=Lobby
 teamislands.lobby.autoteleport_to_island=Auto-teleport to Island

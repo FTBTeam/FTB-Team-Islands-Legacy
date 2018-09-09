@@ -24,6 +24,7 @@ public class TeamIslandsConfig
 	{
 		public boolean enabled_singleplayer = false;
 		public boolean enabled_multiplayer = true;
+		public boolean clear_inv_when_team_left = true;
 
 		public boolean isEnabled(MinecraftServer server)
 		{
@@ -49,18 +50,6 @@ public class TeamIslandsConfig
 
 		@Config.Comment({"Radius of the chunks to automatically claim if FTBUtilities is installed.", "0 = disabled"})
 		public int autoclaim_radius = 5;
-
-		@Config.Comment("Fallback spawn X. Used if \"spawn_x\" is not found in structure NBT.")
-		@Config.RequiresWorldRestart
-		public int fallback_spawn_x = 0;
-
-		@Config.Comment("Fallback spawn Y. Used if \"spawn_y\" is not found in structure NBT.")
-		@Config.RequiresWorldRestart
-		public int fallback_spawn_y = 0;
-
-		@Config.Comment("Fallback spawn Z. Used if \"spawn_z\" is not found in structure NBT.")
-		@Config.RequiresWorldRestart
-		public int fallback_spawn_z = 0;
 	}
 
 	public static void sync()

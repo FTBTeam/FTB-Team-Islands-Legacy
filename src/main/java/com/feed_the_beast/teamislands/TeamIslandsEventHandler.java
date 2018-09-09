@@ -75,6 +75,11 @@ public class TeamIslandsEventHandler
 	{
 		if (TeamIslandsConfig.general.isEnabled(event.getUniverse().server) && event.getPlayer().isOnline())
 		{
+			if (TeamIslandsConfig.general.clear_inv_when_team_left)
+			{
+				event.getPlayer().getPlayer().inventory.clear();
+			}
+
 			TeamIslandsUniverseData.INSTANCE.getIsland(0).teleport(event.getPlayer().getPlayer());
 		}
 	}
