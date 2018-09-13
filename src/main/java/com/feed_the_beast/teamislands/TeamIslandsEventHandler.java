@@ -51,7 +51,7 @@ public class TeamIslandsEventHandler
 
 			island.spawnPoint = island.spawnPoint.offset(EnumFacing.UP);
 
-			while (w.isAirBlock(island.spawnPoint))
+			while (!w.isOutsideBuildHeight(island.spawnPoint) && w.isAirBlock(island.spawnPoint))
 			{
 				island.spawnPoint = island.spawnPoint.down();
 			}
