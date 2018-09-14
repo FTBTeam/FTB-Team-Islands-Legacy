@@ -7,12 +7,8 @@ teamislands.lobby.autoteleport_to_island=Auto-teleport to Island
 
 teamislands.islands=Islands
 teamislands.islands.height=Height
-teamislands.islands.structure_id=Structure ID
-teamislands.islands.enable_teleport_button=Enable Teleport Button
+teamislands.islands.custom_structure_file=Custom Structure File
 teamislands.islands.autoclaim_radius=Auto-claim Radius
-teamislands.islands.fallback_spawn_x=Fallback Spawn X
-teamislands.islands.fallback_spawn_y=Fallback Spawn Y
-teamislands.islands.fallback_spawn_z=Fallback Spawn Z
 
 commands.ftb.teamislands.tpisland.usage=/teamislands tpisland <player>
 commands.ftb.teamislands.tplobby.usage=/teamislands tplobby <player>

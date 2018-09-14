@@ -7,24 +7,25 @@ import com.feed_the_beast.ftblib.events.universe.UniverseSavedEvent;
 import com.feed_the_beast.ftblib.lib.data.ForgeTeam;
 import com.feed_the_beast.ftblib.lib.data.Universe;
 import com.feed_the_beast.ftblib.lib.math.MathUtils;
-import com.feed_the_beast.ftblib.lib.util.NBTUtils;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.io.InputStream;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author LatvianModder
@@ -55,35 +56,49 @@ public class TeamIslandsUniverseData
 			islands.add(new Island(this, i + 1, islandsTag.getCompoundTagAt(i)));
 		}
 
-		ResourceLocation structureId;
-
-		if (TeamIslandsConfig.islands.structure_id.trim().isEmpty())
+		if (TeamIslandsConfig.islands.custom_structure_file.trim().isEmpty())
 		{
-			structureId = new ResourceLocation(TeamIslands.MOD_ID, "teamislands_island");
+			islandTemplate = universe.world.getSaveHandler().getStructureTemplateManager().getTemplate(universe.server, new ResourceLocation(TeamIslands.MOD_ID, "teamislands_island"));
 		}
 		else
 		{
-			structureId = new ResourceLocation(TeamIslandsConfig.islands.structure_id);
+			ResourceLocation id = new ResourceLocation(TeamIslands.MOD_ID, "teamislands_custom");
+			islandTemplate = universe.world.getSaveHandler().getStructureTemplateManager().get(universe.server, id);
+
+			if (islandTemplate == null)
+			{
+				islandTemplate = universe.world.getSaveHandler().getStructureTemplateManager().getTemplate(universe.server, id);
+
+				File file = new File(Loader.instance().getConfigDir(), TeamIslandsConfig.islands.custom_structure_file.trim());
+
+				if (file.exists() && file.isFile())
+				{
+					try (FileInputStream fis = new FileInputStream(file))
+					{
+						islandTemplate.read(CompressedStreamTools.readCompressed(fis));
+					}
+					catch (Exception ex)
+					{
+						ex.printStackTrace();
+					}
+				}
+			}
 		}
 
-		islandTemplate = universe.world.getSaveHandler().getStructureTemplateManager().getTemplate(universe.server, structureId);
+		int sx = islandTemplate.getSize().getX() / 2;
+		int sy = islandTemplate.getSize().getY();
+		int sz = islandTemplate.getSize().getZ() / 2;
 
-		NBTTagCompound nbt1 = NBTUtils.readNBT(new File(universe.world.getSaveHandler().getWorldDirectory(), "structures/" + structureId.getPath() + ".nbt"));
-
-		if (nbt1 == null)
+		for (Map.Entry<BlockPos, String> entry : islandTemplate.getDataBlocks(BlockPos.ORIGIN, new PlacementSettings()).entrySet())
 		{
-			try (InputStream stream = MinecraftServer.class.getResourceAsStream("/assets/" + structureId.getNamespace() + "/structures/" + structureId.getPath() + ".nbt"))
+			if (entry.getValue().equals("SPAWN_POINT"))
 			{
-				nbt1 = CompressedStreamTools.readCompressed(stream);
-			}
-			catch (Exception ex)
-			{
+				sx = entry.getKey().getX();
+				sy = entry.getKey().getY();
+				sz = entry.getKey().getZ();
 			}
 		}
 
-		int sx = nbt1 != null && nbt1.hasKey("spawn_x") ? nbt1.getInteger("spawn_x") : islandTemplate.getSize().getX() / 2;
-		int sy = nbt1 != null && nbt1.hasKey("spawn_y") ? nbt1.getInteger("spawn_y") : islandTemplate.getSize().getY();
-		int sz = nbt1 != null && nbt1.hasKey("spawn_z") ? nbt1.getInteger("spawn_z") : islandTemplate.getSize().getZ() / 2;
 		relativeSpawn = new BlockPos(sx, sy, sz);
 
 		if (FTBLibConfig.debugging.print_more_info)
