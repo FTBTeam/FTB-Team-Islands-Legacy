@@ -75,7 +75,7 @@ public class Island
 		return spawnPoint;
 	}
 
-	public void teleport(Entity entity)
+	public BlockPos getEntitySpawnPos()
 	{
 		if (isLobby())
 		{
@@ -86,11 +86,14 @@ public class Island
 				spawnpoint = spawnpoint.up();
 			}
 
-			TeleporterDimPos.of(spawnpoint, 0).teleport(entity);
+			return spawnpoint;
 		}
-		else
-		{
-			TeleporterDimPos.of(spawnPoint.add(data.relativeSpawn), 0).teleport(entity);
-		}
+
+		return spawnPoint.add(data.relativeSpawn);
+	}
+
+	public void teleport(Entity entity)
+	{
+		TeleporterDimPos.of(getEntitySpawnPos(), 0).teleport(entity);
 	}
 }
