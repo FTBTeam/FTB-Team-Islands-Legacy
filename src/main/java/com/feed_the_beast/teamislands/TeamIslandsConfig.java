@@ -25,6 +25,7 @@ public class TeamIslandsConfig
 		public boolean enabled_singleplayer = false;
 		public boolean enabled_multiplayer = true;
 		public boolean clear_inv_when_team_left = true;
+		public boolean enable_myisland_command = true;
 
 		public boolean isEnabled(MinecraftServer server)
 		{

@@ -16,15 +16,20 @@ public class CmdTeamIslands extends CmdTreeBase
 	public CmdTeamIslands()
 	{
 		super("teamislands");
-		addSubcommand(new CmdTPIsland());
-		addSubcommand(new CmdTPLobby());
+		addSubcommand(new CmdIsland());
+		addSubcommand(new CmdLobby());
+
+		if (TeamIslandsConfig.general.enable_myisland_command)
+		{
+			addSubcommand(new CmdMyIsand());
+		}
 	}
 
-	private static class CmdTPIsland extends CmdBase
+	private static class CmdIsland extends CmdBase
 	{
-		private CmdTPIsland()
+		private CmdIsland()
 		{
-			super("tpisland", Level.OP);
+			super("island", Level.OP);
 		}
 
 		@Override
@@ -46,11 +51,11 @@ public class CmdTeamIslands extends CmdTreeBase
 		}
 	}
 
-	private static class CmdTPLobby extends CmdBase
+	private static class CmdLobby extends CmdBase
 	{
-		private CmdTPLobby()
+		private CmdLobby()
 		{
-			super("tplobby", Level.OP);
+			super("lobby", Level.ALL);
 		}
 
 		@Override
@@ -64,6 +69,26 @@ public class CmdTeamIslands extends CmdTreeBase
 		{
 			checkArgs(sender, args, 1);
 			TeamIslandsUniverseData.INSTANCE.getIsland(0).teleport(getPlayer(server, server, args[0]));
+		}
+	}
+
+	private static class CmdMyIsand extends CmdBase
+	{
+		private CmdMyIsand()
+		{
+			super("myisland", Level.ALL);
+		}
+
+		@Override
+		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
+		{
+			checkArgs(sender, args, 1);
+			ForgePlayer player = CommandUtils.getForgePlayer(sender);
+
+			if (player.hasTeam())
+			{
+				TeamIslandsUniverseData.INSTANCE.getIsland(player.team).teleport(player.getPlayer());
+			}
 		}
 	}
 }

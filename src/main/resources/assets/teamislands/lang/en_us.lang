@@ -1,6 +1,7 @@
 teamislands.general.enabled_singleplayer=Enabled in Singleplayer
 teamislands.general.enabled_multiplayer=Enabled in Multiplayer
 teamislands.general.clear_inv_when_team_left=Clear Inventory After Leaving the Team
+teamislands.general.enable_myisland_command=Enable /teamislands myisland
 
 teamislands.lobby=Lobby
 teamislands.lobby.autoteleport_to_island=Auto-teleport to Island
@@ -10,5 +11,6 @@ teamislands.islands.height=Height
 teamislands.islands.custom_structure_file=Custom Structure File
 teamislands.islands.autoclaim_radius=Auto-claim Radius
 
-commands.ftb.teamislands.tpisland.usage=/teamislands tpisland <player>
-commands.ftb.teamislands.tplobby.usage=/teamislands tplobby <player>
+commands.ftb.teamislands.island.usage=/teamislands island <player>
+commands.ftb.teamislands.lobby.usage=/teamislands lobby <player>
+commands.ftb.teamislands.myisland.usage=/teamislands myisland
