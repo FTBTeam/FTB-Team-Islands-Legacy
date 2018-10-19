@@ -82,7 +82,6 @@ public class CmdTeamIslands extends CmdTreeBase
 		@Override
 		public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
 		{
-			checkArgs(sender, args, 1);
 			ForgePlayer player = CommandUtils.getForgePlayer(sender);
 
 			if (player.hasTeam())
