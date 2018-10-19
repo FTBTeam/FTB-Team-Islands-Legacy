@@ -11,6 +11,6 @@ teamislands.islands.height=Height
 teamislands.islands.custom_structure_file=Custom Structure File
 teamislands.islands.autoclaim_radius=Auto-claim Radius
 
-commands.ftb.teamislands.island.usage=/teamislands island <player>
-commands.ftb.teamislands.lobby.usage=/teamislands lobby <player>
-commands.ftb.teamislands.myisland.usage=/teamislands myisland
+commands.teamislands.island.usage=/teamislands island <player>
+commands.teamislands.lobby.usage=/teamislands lobby <player>
+commands.teamislands.myisland.usage=/teamislands myisland
