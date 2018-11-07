@@ -17,7 +17,7 @@ public class TeamIslandsTeamData extends TeamData
 	}
 
 	@Override
-	public String getName()
+	public String getID()
 	{
 		return TeamIslands.MOD_ID;
 	}
@@ -27,7 +27,7 @@ public class TeamIslandsTeamData extends TeamData
 		if (island == null)
 		{
 			island = TeamIslandsUniverseData.INSTANCE.getIsland(TeamIslandsUniverseData.INSTANCE.islands.size());
-			island.creator = team.getName();
+			island.creator = team.getID();
 			team.markDirty();
 		}
 
@@ -46,6 +46,6 @@ public class TeamIslandsTeamData extends TeamData
 	public void deserializeNBT(NBTTagCompound nbt)
 	{
 		island = TeamIslandsUniverseData.INSTANCE.getIsland(nbt.getInteger("Island"));
-		island.creator = team.getName();
+		island.creator = team.getID();
 	}
 }
