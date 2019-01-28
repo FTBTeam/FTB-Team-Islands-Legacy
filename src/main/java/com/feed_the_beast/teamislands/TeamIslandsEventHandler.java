@@ -42,17 +42,17 @@ public class TeamIslandsEventHandler
 			BlockPos pos = island.getBlockPos();
 			TeamIslandsUniverseData.INSTANCE.islandTemplate.addBlocksToWorld(w, pos, new PlacementSettings(), 2);
 			w.getPendingBlockUpdates(new StructureBoundingBox(pos, pos.add(TeamIslandsUniverseData.INSTANCE.islandTemplate.getSize())), true);
+
+			if (Loader.isModLoaded(FTBUtilities.MOD_ID))
+			{
+				FTBUtilitiesIntegration.claimChunks(event);
+			}
 		}
 
 		if (TeamIslandsConfig.lobby.autoteleport_to_island && event.getPlayer().isOnline())
 		{
 			event.getPlayer().getPlayer().setSpawnChunk(island.getEntitySpawnPos(), true, 0);
 			island.teleport(event.getPlayer().getPlayer());
-		}
-
-		if (Loader.isModLoaded(FTBUtilities.MOD_ID))
-		{
-			FTBUtilitiesIntegration.onPlayerJoinedTeam(event);
 		}
 	}
 

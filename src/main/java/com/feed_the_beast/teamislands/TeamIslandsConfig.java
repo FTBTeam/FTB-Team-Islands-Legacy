@@ -53,8 +53,8 @@ public class TeamIslandsConfig
 		@Config.RequiresWorldRestart
 		public String custom_structure_file = "";
 
-		@Config.Comment({"Radius of the chunks to automatically claim if FTBUtilities is installed.", "0 = disabled"})
-		public int autoclaim_radius = 5;
+		@Config.Comment({"Radius of the chunks to automatically claim if FTBUtilities is installed.", "-1 = disabled", "0 = 1x1", "1 = 3x3", "4 = 9x9"})
+		public int autoclaim_radius = 4;
 	}
 
 	public static void sync()
