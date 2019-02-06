@@ -47,7 +47,7 @@ public class TeamIslandsConfig
 
 		@Config.Comment({
 				"Structure file will be loaded from config/x file.",
-				"If not set, \"world/structures/island.nbt\" will be used.",
+				"If not set, \"world/structures/teamislands_island.nbt\" will be used.",
 				"If that file is missing too, default island will be used."
 		})
 		@Config.RequiresWorldRestart
