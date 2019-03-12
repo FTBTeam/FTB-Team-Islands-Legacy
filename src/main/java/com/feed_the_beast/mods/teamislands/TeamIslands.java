@@ -1,15 +1,11 @@
-package com.feed_the_beast.teamislands;
+package com.feed_the_beast.mods.teamislands;
 
 import com.feed_the_beast.ftblib.FTBLib;
-import com.feed_the_beast.ftblib.lib.util.SidedUtils;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.util.text.ITextComponent;
+import com.feed_the_beast.mods.teamislands.command.CommandTeamIslands;
+import com.feed_the_beast.mods.teamislands.net.TeamIslandsNetHandler;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import javax.annotation.Nullable;
 
 @Mod(
 		modid = TeamIslands.MOD_ID,
@@ -23,16 +19,16 @@ public class TeamIslands
 	public static final String MOD_ID = "teamislands";
 	public static final String MOD_NAME = "Team Islands";
 	public static final String VERSION = "0.0.0.teamislands";
-	public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
-	public static ITextComponent lang(@Nullable ICommandSender sender, String key, Object... args)
+	@Mod.EventHandler
+	public void onPreInit(FMLPreInitializationEvent event)
 	{
-		return SidedUtils.lang(sender, MOD_ID, key, args);
+		TeamIslandsNetHandler.init();
 	}
 
 	@Mod.EventHandler
 	public void onServerStarting(FMLServerStartingEvent event)
 	{
-		event.registerServerCommand(new CmdTeamIslands());
+		event.registerServerCommand(new CommandTeamIslands());
 	}
 }

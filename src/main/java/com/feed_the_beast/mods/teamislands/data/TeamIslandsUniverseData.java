@@ -1,18 +1,20 @@
-package com.feed_the_beast.teamislands;
+package com.feed_the_beast.mods.teamislands.data;
 
-import com.feed_the_beast.ftblib.FTBLibConfig;
 import com.feed_the_beast.ftblib.events.universe.UniverseClosedEvent;
 import com.feed_the_beast.ftblib.events.universe.UniverseLoadedEvent;
 import com.feed_the_beast.ftblib.events.universe.UniverseSavedEvent;
 import com.feed_the_beast.ftblib.lib.data.ForgeTeam;
 import com.feed_the_beast.ftblib.lib.data.Universe;
 import com.feed_the_beast.ftblib.lib.math.MathUtils;
+import com.feed_the_beast.mods.teamislands.TeamIslands;
+import com.feed_the_beast.mods.teamislands.TeamIslandsConfig;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraftforge.common.util.Constants;
@@ -38,8 +40,7 @@ public class TeamIslandsUniverseData
 	public final Universe universe;
 	private final Island lobby;
 	public final List<Island> islands;
-	public Template islandTemplate;
-	public BlockPos relativeSpawn;
+	public List<IslandTemplate> islandTemplates;
 
 	public TeamIslandsUniverseData(Universe u, NBTTagCompound nbt)
 	{
@@ -56,54 +57,60 @@ public class TeamIslandsUniverseData
 			islands.add(new Island(this, i + 1, islandsTag.getCompoundTagAt(i)));
 		}
 
-		if (TeamIslandsConfig.islands.custom_structure_file.trim().isEmpty())
-		{
-			islandTemplate = universe.world.getSaveHandler().getStructureTemplateManager().getTemplate(universe.server, new ResourceLocation(TeamIslands.MOD_ID, "teamislands_island"));
-		}
-		else
-		{
-			ResourceLocation id = new ResourceLocation(TeamIslands.MOD_ID, "teamislands_custom");
-			islandTemplate = universe.world.getSaveHandler().getStructureTemplateManager().get(universe.server, id);
+		islandTemplates = new ArrayList<>();
 
-			if (islandTemplate == null)
+		for (String s : TeamIslandsConfig.islands.structure_files)
+		{
+			Template template = universe.world.getSaveHandler().getStructureTemplateManager().getTemplate(universe.server, new ResourceLocation(TeamIslands.MOD_ID, "custom/" + islandTemplates.size()));
+
+			File file = new File(Loader.instance().getConfigDir(), s.trim());
+
+			if (file.exists() && file.isFile())
 			{
-				islandTemplate = universe.world.getSaveHandler().getStructureTemplateManager().getTemplate(universe.server, id);
-
-				File file = new File(Loader.instance().getConfigDir(), TeamIslandsConfig.islands.custom_structure_file.trim());
-
-				if (file.exists() && file.isFile())
+				try (FileInputStream fis = new FileInputStream(file))
 				{
-					try (FileInputStream fis = new FileInputStream(file))
+					template.read(CompressedStreamTools.readCompressed(fis));
+					islandTemplates.add(new IslandTemplate(file.getName(), template));
+				}
+				catch (Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+		}
+
+		if (islandTemplates.isEmpty())
+		{
+			Template template = universe.world.getSaveHandler().getStructureTemplateManager().getTemplate(universe.server, new ResourceLocation(TeamIslands.MOD_ID, "teamislands_island"));
+			islandTemplates.add(new IslandTemplate("default", template));
+		}
+
+		for (IslandTemplate t : islandTemplates)
+		{
+			t.spawn = new BlockPos(t.template.getSize().getX() / 2, t.template.getSize().getY(), t.template.getSize().getZ() / 2);
+
+			for (Map.Entry<BlockPos, String> entry : t.template.getDataBlocks(BlockPos.ORIGIN, new PlacementSettings()).entrySet())
+			{
+				if (entry.getValue().equals("SPAWN_POINT"))
+				{
+					t.spawn = entry.getKey();
+				}
+				else if (entry.getValue().startsWith("DISPLAY_NAME="))
+				{
+					try
 					{
-						islandTemplate.read(CompressedStreamTools.readCompressed(fis));
+						t.displayName = ITextComponent.Serializer.fromJsonLenient(entry.getValue().substring(13));
 					}
 					catch (Exception ex)
 					{
 						ex.printStackTrace();
 					}
 				}
+				else if (entry.getValue().startsWith("ICON="))
+				{
+					t.icon = entry.getValue().substring(5);
+				}
 			}
-		}
-
-		int sx = islandTemplate.getSize().getX() / 2;
-		int sy = islandTemplate.getSize().getY();
-		int sz = islandTemplate.getSize().getZ() / 2;
-
-		for (Map.Entry<BlockPos, String> entry : islandTemplate.getDataBlocks(BlockPos.ORIGIN, new PlacementSettings()).entrySet())
-		{
-			if (entry.getValue().equals("SPAWN_POINT"))
-			{
-				sx = entry.getKey().getX();
-				sy = entry.getKey().getY();
-				sz = entry.getKey().getZ();
-			}
-		}
-
-		relativeSpawn = new BlockPos(sx, sy, sz);
-
-		if (FTBLibConfig.debugging.print_more_info)
-		{
-			TeamIslands.LOGGER.info("Island relative spawnpoint: " + relativeSpawn);
 		}
 	}
 

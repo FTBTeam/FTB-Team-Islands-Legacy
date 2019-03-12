@@ -1,7 +1,8 @@
-package com.feed_the_beast.teamislands;
+package com.feed_the_beast.mods.teamislands.data;
 
 import com.feed_the_beast.ftblib.lib.data.ForgeTeam;
 import com.feed_the_beast.ftblib.lib.data.TeamData;
+import com.feed_the_beast.mods.teamislands.TeamIslands;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**

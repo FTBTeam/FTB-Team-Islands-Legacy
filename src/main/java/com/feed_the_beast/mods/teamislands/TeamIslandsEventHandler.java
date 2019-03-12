@@ -1,17 +1,27 @@
-package com.feed_the_beast.teamislands;
+package com.feed_the_beast.mods.teamislands;
 
 import com.feed_the_beast.ftblib.events.team.ForgeTeamDataEvent;
 import com.feed_the_beast.ftblib.events.team.ForgeTeamDeletedEvent;
 import com.feed_the_beast.ftblib.events.team.ForgeTeamPlayerJoinedEvent;
 import com.feed_the_beast.ftblib.events.team.ForgeTeamPlayerLeftEvent;
 import com.feed_the_beast.ftbutilities.FTBUtilities;
+import com.feed_the_beast.mods.teamislands.data.Island;
+import com.feed_the_beast.mods.teamislands.data.IslandTemplate;
+import com.feed_the_beast.mods.teamislands.data.TeamIslandsTeamData;
+import com.feed_the_beast.mods.teamislands.data.TeamIslandsUniverseData;
+import com.feed_the_beast.mods.teamislands.net.MessageOpenGui;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.util.ArrayList;
 
 /**
  * @author LatvianModder
@@ -28,30 +38,49 @@ public class TeamIslandsEventHandler
 	@SubscribeEvent
 	public static void onPlayerJoinedTeam(ForgeTeamPlayerJoinedEvent event)
 	{
-		if (!TeamIslandsConfig.general.isEnabled(event.getUniverse().server))
+		if (!TeamIslandsConfig.general.isEnabled(event.getUniverse().server) || !event.getPlayer().isOnline())
 		{
 			return;
 		}
 
-		Island island = TeamIslandsUniverseData.INSTANCE.getIsland(event.getTeam());
+		TeamIslandsUniverseData data = TeamIslandsUniverseData.INSTANCE;
+		EntityPlayerMP player = event.getPlayer().getPlayer();
+		Island island = data.getIsland(event.getTeam());
 
 		if (!island.spawned)
 		{
+			if (data.islandTemplates.size() > 1 && TeamIslandsConfig.islands.select_islands)
+			{
+				final ArrayList<ITextComponent> names = new ArrayList<>();
+				final ArrayList<String> icons = new ArrayList<>();
+
+				for (IslandTemplate template : data.islandTemplates)
+				{
+					names.add(template.displayName == null ? new TextComponentString(template.name) : template.displayName);
+					icons.add(template.icon);
+				}
+
+				event.setDisplayGui(() -> new MessageOpenGui(names, icons).sendTo(player));
+				return;
+			}
+
 			island.spawned = true;
 			World w = event.getUniverse().world;
 			BlockPos pos = island.getBlockPos();
-			TeamIslandsUniverseData.INSTANCE.islandTemplate.addBlocksToWorld(w, pos, new PlacementSettings(), 2);
-			w.getPendingBlockUpdates(new StructureBoundingBox(pos, pos.add(TeamIslandsUniverseData.INSTANCE.islandTemplate.getSize())), true);
+			island.template = w.rand.nextInt(data.islandTemplates.size());
+			IslandTemplate template = island.getTemplate();
+			template.template.addBlocksToWorld(w, pos, new PlacementSettings(), 2);
+			w.getPendingBlockUpdates(new StructureBoundingBox(pos, pos.add(template.template.getSize())), true);
 
 			if (Loader.isModLoaded(FTBUtilities.MOD_ID))
 			{
-				FTBUtilitiesIntegration.claimChunks(event);
+				FTBUtilitiesIntegration.claimChunks(event.getPlayer());
 			}
 		}
 
-		if (TeamIslandsConfig.lobby.autoteleport_to_island && event.getPlayer().isOnline())
+		if (TeamIslandsConfig.lobby.autoteleport_to_island)
 		{
-			event.getPlayer().getPlayer().setSpawnChunk(island.getEntitySpawnPos(), true, 0);
+			player.setSpawnChunk(island.getEntitySpawnPos(), true, 0);
 			island.teleport(event.getPlayer().getPlayer());
 		}
 	}

@@ -1,6 +1,7 @@
-package com.feed_the_beast.teamislands;
+package com.feed_the_beast.mods.teamislands.data;
 
 import com.feed_the_beast.ftblib.lib.math.TeleporterDimPos;
+import com.feed_the_beast.mods.teamislands.TeamIslandsConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -13,6 +14,7 @@ public class Island
 	public final TeamIslandsUniverseData data;
 	public final int id;
 	public final int x, z;
+	public int template;
 	public boolean active, spawned;
 	public String creator;
 	public BlockPos spawnPoint;
@@ -23,6 +25,7 @@ public class Island
 		id = i;
 		x = _x;
 		z = _z;
+		template = -1;
 		active = true;
 		spawned = false;
 		creator = c;
@@ -35,6 +38,7 @@ public class Island
 		id = i;
 		x = nbt.getInteger("X");
 		z = nbt.getInteger("Z");
+		template = nbt.getInteger("Template");
 		active = !nbt.getBoolean("Inactive");
 		spawned = nbt.getBoolean("Spawned");
 		creator = nbt.getString("Creator");
@@ -45,6 +49,7 @@ public class Island
 	{
 		nbt.setInteger("X", x);
 		nbt.setInteger("Z", z);
+		nbt.setInteger("Template", template);
 		nbt.setBoolean("Inactive", !active);
 		nbt.setBoolean("Spawned", spawned);
 		nbt.setString("Creator", creator);
@@ -75,6 +80,11 @@ public class Island
 		return spawnPoint;
 	}
 
+	public IslandTemplate getTemplate()
+	{
+		return template < 0 || template >= data.islandTemplates.size() ? data.islandTemplates.get(0) : data.islandTemplates.get(template);
+	}
+
 	public BlockPos getEntitySpawnPos()
 	{
 		if (isLobby())
@@ -89,7 +99,7 @@ public class Island
 			return spawnpoint;
 		}
 
-		return spawnPoint.add(data.relativeSpawn);
+		return spawnPoint.add(getTemplate().spawn);
 	}
 
 	public void teleport(Entity entity)

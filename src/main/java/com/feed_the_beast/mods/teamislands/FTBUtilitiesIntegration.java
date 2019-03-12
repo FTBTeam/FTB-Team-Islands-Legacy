@@ -1,11 +1,13 @@
-package com.feed_the_beast.teamislands;
+package com.feed_the_beast.mods.teamislands;
 
-import com.feed_the_beast.ftblib.events.team.ForgeTeamPlayerJoinedEvent;
+import com.feed_the_beast.ftblib.lib.data.ForgePlayer;
 import com.feed_the_beast.ftblib.lib.math.ChunkDimPos;
 import com.feed_the_beast.ftblib.lib.math.MathUtils;
 import com.feed_the_beast.ftbutilities.FTBUtilitiesPermissions;
 import com.feed_the_beast.ftbutilities.data.ClaimedChunks;
 import com.feed_the_beast.ftbutilities.data.FTBUtilitiesTeamData;
+import com.feed_the_beast.mods.teamislands.data.Island;
+import com.feed_the_beast.mods.teamislands.data.TeamIslandsUniverseData;
 import net.minecraft.util.math.ChunkPos;
 
 /**
@@ -13,17 +15,17 @@ import net.minecraft.util.math.ChunkPos;
  */
 public class FTBUtilitiesIntegration
 {
-	public static void claimChunks(ForgeTeamPlayerJoinedEvent event)
+	public static void claimChunks(ForgePlayer player)
 	{
 		int r = TeamIslandsConfig.islands.autoclaim_radius;
 
 		if (r >= 0 && ClaimedChunks.instance != null)
 		{
-			Island island = TeamIslandsUniverseData.INSTANCE.getIsland(event.getTeam());
+			Island island = TeamIslandsUniverseData.INSTANCE.getIsland(player.team);
 
 			if (!island.isLobby())
 			{
-				int chunks = Math.min((r * 2 + 1) * (r * 2 + 1), FTBUtilitiesTeamData.get(event.getTeam()).getMaxClaimChunks());
+				int chunks = Math.min((r * 2 + 1) * (r * 2 + 1), FTBUtilitiesTeamData.get(player.team).getMaxClaimChunks());
 				int x = island.getEntitySpawnPos().getX() >> 4;
 				int z = island.getEntitySpawnPos().getZ() >> 4;
 
@@ -32,9 +34,9 @@ public class FTBUtilitiesIntegration
 					ChunkPos pos0 = MathUtils.getSpiralPoint(i);
 					ChunkDimPos pos = new ChunkDimPos(x + pos0.x, z + pos0.z, 0);
 
-					if (ClaimedChunks.instance.canPlayerModify(event.getPlayer(), pos, FTBUtilitiesPermissions.CLAIMS_OTHER_CLAIM))
+					if (ClaimedChunks.instance.canPlayerModify(player, pos, FTBUtilitiesPermissions.CLAIMS_OTHER_CLAIM))
 					{
-						ClaimedChunks.instance.claimChunk(event.getPlayer(), pos);
+						ClaimedChunks.instance.claimChunk(player, pos);
 					}
 				}
 			}
