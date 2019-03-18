@@ -62,6 +62,12 @@ public class VoidWorldType extends WorldType
 	}
 
 	@Override
+	public int getMinimumSpawnHeight(World world)
+	{
+		return 1;
+	}
+
+	@Override
 	@Nonnull
 	public IChunkGenerator getChunkGenerator(World world, String generatorOptions)
 	{
