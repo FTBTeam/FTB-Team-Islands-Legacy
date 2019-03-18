@@ -6,13 +6,13 @@ import com.feed_the_beast.ftblib.events.team.ForgeTeamPlayerJoinedEvent;
 import com.feed_the_beast.ftblib.events.team.ForgeTeamPlayerLeftEvent;
 import com.feed_the_beast.ftbutilities.FTBUtilities;
 import com.feed_the_beast.mods.teamislands.data.Island;
+import com.feed_the_beast.mods.teamislands.data.IslandButton;
 import com.feed_the_beast.mods.teamislands.data.IslandTemplate;
 import com.feed_the_beast.mods.teamislands.data.TeamIslandsTeamData;
 import com.feed_the_beast.mods.teamislands.data.TeamIslandsUniverseData;
 import com.feed_the_beast.mods.teamislands.net.MessageOpenGui;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -51,23 +51,25 @@ public class TeamIslandsEventHandler
 		{
 			if (data.islandTemplates.size() > 1 && TeamIslandsConfig.islands.select_islands)
 			{
-				final ArrayList<ITextComponent> names = new ArrayList<>();
-				final ArrayList<String> icons = new ArrayList<>();
+				final ArrayList<IslandButton> islands = new ArrayList<>();
 
 				for (IslandTemplate template : data.islandTemplates)
 				{
-					names.add(template.displayName == null ? new TextComponentString(template.name) : template.displayName);
-					icons.add(template.icon);
+					IslandButton islandButton = new IslandButton();
+					islandButton.path = template.path;
+					islandButton.name = template.displayName == null ? new TextComponentString(template.name) : template.displayName;
+					islandButton.icon = template.icon;
+					islands.add(islandButton);
 				}
 
-				event.setDisplayGui(() -> new MessageOpenGui(names, icons).sendTo(player));
+				event.setDisplayGui(() -> new MessageOpenGui(islands).sendTo(player));
 				return;
 			}
 
 			island.spawned = true;
 			World w = event.getUniverse().world;
 			BlockPos pos = island.getBlockPos();
-			island.template = w.rand.nextInt(data.islandTemplates.size());
+			island.template = data.islandTemplates.get(w.rand.nextInt(data.islandTemplates.size())).path;
 			IslandTemplate template = island.getTemplate();
 			template.template.addBlocksToWorld(w, pos, new PlacementSettings(), 2);
 			w.getPendingBlockUpdates(new StructureBoundingBox(pos, pos.add(template.template.getSize())), true);

@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +41,8 @@ public class TeamIslandsUniverseData
 	public final Universe universe;
 	private final Island lobby;
 	public final List<Island> islands;
-	public List<IslandTemplate> islandTemplates;
+	public final List<IslandTemplate> islandTemplates;
+	public final Map<String, IslandTemplate> islandTemplateMap;
 
 	public TeamIslandsUniverseData(Universe u, NBTTagCompound nbt)
 	{
@@ -58,19 +60,29 @@ public class TeamIslandsUniverseData
 		}
 
 		islandTemplates = new ArrayList<>();
+		islandTemplateMap = new HashMap<>();
 
 		for (String s : TeamIslandsConfig.islands.structure_files)
 		{
 			Template template = universe.world.getSaveHandler().getStructureTemplateManager().getTemplate(universe.server, new ResourceLocation(TeamIslands.MOD_ID, "custom/" + islandTemplates.size()));
 
-			File file = new File(Loader.instance().getConfigDir(), s.trim());
+			File folder = Loader.instance().getConfigDir();
+			s = s.trim();
+
+			if (s.startsWith("/"))
+			{
+				folder = folder.getParentFile();
+				s = s.substring(1);
+			}
+
+			File file = new File(folder, s);
 
 			if (file.exists() && file.isFile())
 			{
 				try (FileInputStream fis = new FileInputStream(file))
 				{
 					template.read(CompressedStreamTools.readCompressed(fis));
-					islandTemplates.add(new IslandTemplate(file.getName(), template));
+					islandTemplates.add(new IslandTemplate(file.getName(), s, template));
 				}
 				catch (Exception ex)
 				{
@@ -82,7 +94,7 @@ public class TeamIslandsUniverseData
 		if (islandTemplates.isEmpty())
 		{
 			Template template = universe.world.getSaveHandler().getStructureTemplateManager().getTemplate(universe.server, new ResourceLocation(TeamIslands.MOD_ID, "teamislands_island"));
-			islandTemplates.add(new IslandTemplate("default", template));
+			islandTemplates.add(new IslandTemplate("default", "default", template));
 		}
 
 		for (IslandTemplate t : islandTemplates)
@@ -111,6 +123,11 @@ public class TeamIslandsUniverseData
 					t.icon = entry.getValue().substring(5);
 				}
 			}
+		}
+
+		for (IslandTemplate template : islandTemplates)
+		{
+			islandTemplateMap.put(template.path, template);
 		}
 	}
 

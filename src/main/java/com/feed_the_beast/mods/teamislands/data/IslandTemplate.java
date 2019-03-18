@@ -10,14 +10,16 @@ import net.minecraft.world.gen.structure.template.Template;
 public class IslandTemplate
 {
 	public final String name;
+	public final String path;
 	public final Template template;
 	public BlockPos spawn = BlockPos.ORIGIN;
 	public ITextComponent displayName = null;
 	public String icon = "";
 
-	public IslandTemplate(String n, Template t)
+	public IslandTemplate(String n, String p, Template t)
 	{
 		name = n;
+		path = p;
 		template = t;
 	}
 }

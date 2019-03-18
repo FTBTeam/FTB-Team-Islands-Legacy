@@ -24,6 +24,11 @@ public class TeamIslands
 	public void onPreInit(FMLPreInitializationEvent event)
 	{
 		TeamIslandsNetHandler.init();
+
+		if (!TeamIslandsConfig.general.void_world_type_id.isEmpty())
+		{
+			new VoidWorldType();
+		}
 	}
 
 	@Mod.EventHandler

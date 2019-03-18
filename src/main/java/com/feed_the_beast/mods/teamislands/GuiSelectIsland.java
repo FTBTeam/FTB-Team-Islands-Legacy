@@ -5,11 +5,10 @@ import com.feed_the_beast.ftblib.lib.gui.SimpleTextButton;
 import com.feed_the_beast.ftblib.lib.gui.misc.GuiButtonListBase;
 import com.feed_the_beast.ftblib.lib.icon.Icon;
 import com.feed_the_beast.ftblib.lib.util.misc.MouseButton;
+import com.feed_the_beast.mods.teamislands.data.IslandButton;
 import com.feed_the_beast.mods.teamislands.net.MessageSelectIsland;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.ITextComponent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,21 +16,12 @@ import java.util.List;
  */
 public class GuiSelectIsland extends GuiButtonListBase
 {
-	private final List<String> islands;
-	private final List<Icon> islandIcons;
+	private final List<IslandButton> islands;
 
-	public GuiSelectIsland(List<ITextComponent> l, List<String> ic)
+	public GuiSelectIsland(List<IslandButton> i)
 	{
 		setTitle(I18n.format("gui.teamislands.select_island"));
-
-		islands = new ArrayList<>();
-		islandIcons = new ArrayList<>();
-
-		for (int i = 0; i < l.size(); i++)
-		{
-			islands.add(l.get(i).getFormattedText());
-			islandIcons.add(Icon.getIcon(ic.get(i)));
-		}
+		islands = i;
 	}
 
 	@Override
@@ -48,16 +38,14 @@ public class GuiSelectIsland extends GuiButtonListBase
 	@Override
 	public void addButtons(Panel panel)
 	{
-		for (int i = 0; i < islands.size(); i++)
+		for (IslandButton island : islands)
 		{
-			int i1 = i;
-
-			panel.add(new SimpleTextButton(panel, islands.get(i1), islandIcons.get(i1))
+			panel.add(new SimpleTextButton(panel, island.name.getFormattedText(), Icon.getIcon(island.icon))
 			{
 				@Override
 				public void onClicked(MouseButton button)
 				{
-					new MessageSelectIsland(i1).sendToServer();
+					new MessageSelectIsland(island.path).sendToServer();
 					closeGui();
 				}
 			});

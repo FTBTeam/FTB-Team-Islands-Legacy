@@ -18,3 +18,5 @@ gui.teamislands.select_island=Select Island
 commands.teamislands.island.usage=/teamislands island <player>
 commands.teamislands.lobby.usage=/teamislands lobby <player>
 commands.teamislands.myisland.usage=/teamislands myisland
+
+generator.void=Void

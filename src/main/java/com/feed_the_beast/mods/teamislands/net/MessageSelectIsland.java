@@ -24,15 +24,15 @@ import net.minecraftforge.fml.common.Loader;
  */
 public class MessageSelectIsland extends MessageToServer
 {
-	public int index;
+	public String path;
 
 	public MessageSelectIsland()
 	{
 	}
 
-	public MessageSelectIsland(int i)
+	public MessageSelectIsland(String p)
 	{
-		index = i;
+		path = p;
 	}
 
 	@Override
@@ -44,13 +44,13 @@ public class MessageSelectIsland extends MessageToServer
 	@Override
 	public void writeData(DataOut data)
 	{
-		data.writeInt(index);
+		data.writeString(path);
 	}
 
 	@Override
 	public void readData(DataIn data)
 	{
-		index = data.readInt();
+		path = data.readString();
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class MessageSelectIsland extends MessageToServer
 			island.spawned = true;
 			World w = Universe.get().world;
 			BlockPos pos = island.getBlockPos();
-			island.template = index;
+			island.template = path;
 			IslandTemplate template = island.getTemplate();
 			template.template.addBlocksToWorld(w, pos, new PlacementSettings(), 2);
 			w.getPendingBlockUpdates(new StructureBoundingBox(pos, pos.add(template.template.getSize())), true);
