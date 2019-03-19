@@ -52,13 +52,6 @@ public class TeamIslandsUniverseData
 		islands = new ArrayList<>();
 		islands.add(lobby);
 
-		NBTTagList islandsTag = nbt.getTagList("Islands", Constants.NBT.TAG_COMPOUND);
-
-		for (int i = 0; i < islandsTag.tagCount(); i++)
-		{
-			islands.add(new Island(this, i + 1, islandsTag.getCompoundTagAt(i)));
-		}
-
 		islandTemplates = new ArrayList<>();
 		islandTemplateMap = new HashMap<>();
 
@@ -128,6 +121,13 @@ public class TeamIslandsUniverseData
 		for (IslandTemplate template : islandTemplates)
 		{
 			islandTemplateMap.put(template.path, template);
+		}
+
+		NBTTagList islandsTag = nbt.getTagList("Islands", Constants.NBT.TAG_COMPOUND);
+
+		for (int i = 0; i < islandsTag.tagCount(); i++)
+		{
+			islands.add(new Island(this, i + 1, islandsTag.getCompoundTagAt(i)));
 		}
 	}
 
