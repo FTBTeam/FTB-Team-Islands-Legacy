@@ -97,8 +97,8 @@ public class TeamIslandsEventHandler
 				event.getPlayer().getPlayer().inventory.clear();
 			}
 
-			event.getPlayer().getPlayer().setSpawnChunk(TeamIslandsUniverseData.INSTANCE.getIsland(0).getEntitySpawnPos(), true, 0);
-			TeamIslandsUniverseData.INSTANCE.getIsland(0).teleport(event.getPlayer().getPlayer());
+			event.getPlayer().getPlayer().setSpawnChunk(TeamIslandsUniverseData.INSTANCE.getLobby().getEntitySpawnPos(), true, 0);
+			TeamIslandsUniverseData.INSTANCE.getLobby().teleport(event.getPlayer().getPlayer());
 		}
 	}
 

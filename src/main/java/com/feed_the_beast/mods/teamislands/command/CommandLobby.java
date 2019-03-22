@@ -4,7 +4,6 @@ import com.feed_the_beast.mods.teamislands.data.TeamIslandsUniverseData;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 
 /**
@@ -21,7 +20,7 @@ public class CommandLobby extends CommandBase
 	@Override
 	public String getUsage(ICommandSender sender)
 	{
-		return "command.teamislands.lobby.usage";
+		return "commands.teamislands.lobby.usage";
 	}
 
 	@Override
@@ -45,11 +44,6 @@ public class CommandLobby extends CommandBase
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
 	{
-		if (args.length < 1)
-		{
-			throw new WrongUsageException(getUsage(sender));
-		}
-
-		TeamIslandsUniverseData.INSTANCE.getIsland(0).teleport(getPlayer(server, server, args[0]));
+		TeamIslandsUniverseData.INSTANCE.getLobby().teleport(getCommandSenderAsPlayer(sender));
 	}
 }

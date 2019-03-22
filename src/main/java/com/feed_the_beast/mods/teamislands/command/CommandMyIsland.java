@@ -22,7 +22,7 @@ public class CommandMyIsland extends CommandBase
 	@Override
 	public String getUsage(ICommandSender sender)
 	{
-		return "command.teamislands.myisland.usage";
+		return "commands.teamislands.myisland.usage";
 	}
 
 	@Override

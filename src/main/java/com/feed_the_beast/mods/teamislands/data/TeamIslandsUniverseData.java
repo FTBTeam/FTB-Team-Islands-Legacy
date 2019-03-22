@@ -131,11 +131,16 @@ public class TeamIslandsUniverseData
 		}
 	}
 
+	public Island getLobby()
+	{
+		return lobby;
+	}
+
 	public Island getIsland(int id)
 	{
 		if (id == 0)
 		{
-			return lobby;
+			return getLobby();
 		}
 
 		Island island = id < 0 || id >= islands.size() ? null : islands.get(id);

@@ -8,6 +8,11 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
+
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author LatvianModder
@@ -23,13 +28,19 @@ public class CommandIsland extends CommandBase
 	@Override
 	public String getUsage(ICommandSender sender)
 	{
-		return "command.teamislands.island.usage";
+		return "commands.teamislands.island.usage";
 	}
 
 	@Override
 	public boolean isUsernameIndex(String[] args, int index)
 	{
 		return index == 0;
+	}
+
+	@Override
+	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos)
+	{
+		return args.length == 1 ? getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames()) : Collections.emptyList();
 	}
 
 	@Override
