@@ -51,6 +51,11 @@ public class TeamIslandsEventHandler
 		{
 			if (data.islandTemplates.size() > 1 && TeamIslandsConfig.islands.select_islands)
 			{
+				if (!event.getTeam().isOwner(event.getPlayer()))
+				{
+					return;
+				}
+
 				final ArrayList<IslandButton> islands = new ArrayList<>();
 
 				for (IslandTemplate template : data.islandTemplates)
