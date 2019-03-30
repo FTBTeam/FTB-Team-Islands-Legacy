@@ -13,6 +13,7 @@ public class CommandTeamIslands extends CommandTreeBase
 	{
 		addSubcommand(new CommandIsland());
 		addSubcommand(new CommandLobby());
+		addSubcommand(new CommandListIslands());
 
 		if (TeamIslandsConfig.general.enable_myisland_command)
 		{

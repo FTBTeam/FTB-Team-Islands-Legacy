@@ -1,7 +1,7 @@
 package com.feed_the_beast.mods.teamislands.command;
 
 import com.feed_the_beast.ftblib.lib.command.CommandUtils;
-import com.feed_the_beast.ftblib.lib.data.ForgePlayer;
+import com.feed_the_beast.ftblib.lib.data.ForgeTeam;
 import com.feed_the_beast.mods.teamislands.data.TeamIslandsUniverseData;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -51,11 +51,7 @@ public class CommandIsland extends CommandBase
 			throw new WrongUsageException(getUsage(sender));
 		}
 
-		ForgePlayer player = CommandUtils.getForgePlayer(sender, args[0]);
-
-		if (player.isOnline() && player.hasTeam())
-		{
-			TeamIslandsUniverseData.INSTANCE.getIsland(player.team).teleport(player.getPlayer());
-		}
+		ForgeTeam team = CommandUtils.getTeam(sender, args[0]);
+		TeamIslandsUniverseData.INSTANCE.getIsland(team).teleport(getCommandSenderAsPlayer(sender));
 	}
 }
