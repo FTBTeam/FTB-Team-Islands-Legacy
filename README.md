@@ -1,1 +1,1 @@
-# Team Islands [![](http://cf.way2muchnoise.eu/team-islands.svg)](https://minecraft.curseforge.com/projects/team-islands) [![](http://cf.way2muchnoise.eu/versions/team-islands.svg)](https://minecraft.curseforge.com/projects/team-islands)
+# Team Islands [![](http://cf.way2muchnoise.eu/team-islands.svg) ![](https://cf.way2muchnoise.eu/packs/team-islands.svg) ![](http://cf.way2muchnoise.eu/versions/team-islands.svg)](https://www.curseforge.com/minecraft/mc-mods/team-islands)
